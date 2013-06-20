@@ -1,0 +1,121 @@
+# depslib dependency file v1.0
+1371757538 source:d:\prog\c\itp\robosimulator\algorithmen.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"Algorithmen.h"
+	"Roboter.h"
+
+1371757250 d:\prog\c\itp\robosimulator\algorithmen.h
+
+1371755979 d:\prog\c\itp\robosimulator\roboter.h
+	"Karte.h"
+	"Auswertung.h"
+	<stdbool.h>
+
+1371755749 d:\prog\c\itp\robosimulator\karte.h
+
+1371755982 d:\prog\c\itp\robosimulator\auswertung.h
+
+1371757538 source:d:\prog\c\itp\robosimulator\auswertung.c
+	"Auswertung.h"
+
+1371757796 source:d:\prog\c\itp\robosimulator\hilfsfunktionen.c
+
+1371757574 source:d:\prog\c\itp\robosimulator\karte.c
+	"Karte.h"
+
+1371761010 source:d:\prog\c\itp\robosimulator\loesungsalgorithmen.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"loesungsalgorithmen.h"
+	"Roboter.h"
+
+1371757453 source:d:\prog\c\itp\robosimulator\roboter.c
+	"Roboter.h"
+	<math.h>
+
+1371762474 source:d:\prog\c\itp\robosimulator\szenario.c
+	<time.h>
+	"Szenario.h"
+	"Hilfsfunktionen.h"
+
+1371756038 d:\prog\c\itp\robosimulator\szenario.h
+	"Roboter.h"
+
+1371757796 d:\prog\c\itp\robosimulator\hilfsfunktionen.h
+
+1371763582 source:d:\prog\c\itp\robosimulator\robosimulator.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<unistd.h>
+	"Szenario.h"
+	"Algorithmen.h"
+	"loesungsalgorithmen.h"
+	<windows.h>
+	<unistd.h>
+
+1371757248 d:\prog\c\itp\robosimulator\loesungsalgorithmen.h
+
+1371757538 source:d:\prog\c\bla\robosimulator\algorithmen.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"Algorithmen.h"
+	"Roboter.h"
+
+1371757250 d:\prog\c\bla\robosimulator\algorithmen.h
+
+1371755979 d:\prog\c\bla\robosimulator\roboter.h
+	"Karte.h"
+	"Auswertung.h"
+	<stdbool.h>
+
+1371755749 d:\prog\c\bla\robosimulator\karte.h
+
+1371755982 d:\prog\c\bla\robosimulator\auswertung.h
+
+1371757538 source:d:\prog\c\bla\robosimulator\auswertung.c
+	"Auswertung.h"
+
+1371757796 source:d:\prog\c\bla\robosimulator\hilfsfunktionen.c
+
+1371757574 source:d:\prog\c\bla\robosimulator\karte.c
+	"Karte.h"
+
+1371761010 source:d:\prog\c\bla\robosimulator\loesungsalgorithmen.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"loesungsalgorithmen.h"
+	"Roboter.h"
+
+1371757248 d:\prog\c\bla\robosimulator\loesungsalgorithmen.h
+
+1371764335 source:d:\prog\c\bla\robosimulator\robosimulator.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<unistd.h>
+	"Szenario.h"
+	"Algorithmen.h"
+	"loesungsalgorithmen.h"
+	<windows.h>
+	<unistd.h>
+
+1371756038 d:\prog\c\bla\robosimulator\szenario.h
+	"Roboter.h"
+
+1371757453 source:d:\prog\c\bla\robosimulator\roboter.c
+	"Roboter.h"
+	<math.h>
+
+1371762474 source:d:\prog\c\bla\robosimulator\szenario.c
+	<time.h>
+	"Szenario.h"
+	"Hilfsfunktionen.h"
+
+1371757796 d:\prog\c\bla\robosimulator\hilfsfunktionen.h
+

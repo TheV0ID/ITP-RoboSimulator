@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="RoboSimulator" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/RoboSimulator" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/RoboSimulator" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="Algorithmen.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Algorithmen.h" />
+		<Unit filename="Auswertung.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Auswertung.h" />
+		<Unit filename="Hilfsfunktionen.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Hilfsfunktionen.h" />
+		<Unit filename="Karte.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Karte.h" />
+		<Unit filename="RoboSimulator.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Roboter.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Roboter.h" />
+		<Unit filename="Szenario.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Szenario.h" />
+		<Unit filename="loesungsalgorithmen.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="loesungsalgorithmen.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -145,7 +145,7 @@ void szenario3(){
     ziel = ziel3;
 }
 void szenario4(){
-    int i,j,spalten=40,zeilen=20;
+    int i,spalten=40,zeilen=20;
     initialisierung(spalten,zeilen);
     char **arr;
     arr=(char**)malloc(spalten*sizeof(char *));
@@ -186,7 +186,7 @@ void szenario4(){
     ziel = ziel3;
 }
 void szenario5(){
-    int i,j,spalten=40,zeilen=20;
+    int i,spalten=40,zeilen=20;
     initialisierung(spalten,zeilen);
     char **arr;
     arr=(char**)malloc(spalten*sizeof(char *));

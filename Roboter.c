@@ -1,6 +1,6 @@
 #include "Roboter.h"
 #include <math.h>
-
+#include "Szenario.h"
 
 Position roboterPosition;
 int blickrichtung=0;

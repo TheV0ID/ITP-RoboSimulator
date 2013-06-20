@@ -14,7 +14,7 @@ void initialisiere(char pfad[]) {
 	if(datei == NULL) {
 		datei = fopen(pfad, "r");
 		if(datei == NULL) {
-			printf("\n\nDie Datei %s konnte nicht geöffnet werden.\n\n");
+			printf("\n\nDie Datei s konnte nicht geöffnet werden.\n\n");
 		}
 	}
 }

@@ -1,6 +1,9 @@
 #ifndef KARTE_H_INCLUDED
 #define KARTE_H_INCLUDED
 
+#include<stdio.h>
+#include<stdlib.h>
+
 #define nord 0
 #define nordOst 1
 #define ost 2

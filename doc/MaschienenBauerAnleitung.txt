@@ -1,0 +1,360 @@
+###############################################################################################################
+### 					Maschinenbauer Anleitung
+###############################################################################################################
+
+Inhalt:
+
+1. Ein Projekt
+1.1 Die main()
+1.1.1 die Schleife
+1.2 Die run()-Funktion 
+2. Zur Verfügung stehende Funktionen und Variablen
+2.1 Die Karte
+2.2 Der Roboter
+
+
+###############################################################################################################
+### 					FooBar
+###############################################################################################################
+
+
+###############################################################################################################
+### 					Ein Projekt
+###############################################################################################################
+
+Der RoboSimulator ist ein DevC++ Projekt. Ein derartiges Projekt besteht aus mehreren Quelldateien und meist auch aus dazu passenden Headerdateien sowie immer aus einer .dev Datei. In unserem Fall heißt sie RoboSimulator.dev, mit ihr öffnet man auch das gesamte Projekt in DevC++. 
+
+Die main()-Funktion
+
+Die Mainfunktion befindet sich in der Quelldatei RoboSimulator.c. 
+In ihr werden die wichtigsten Anpassungen vorgenommen, um die verschiedenen Aufgaben zu erledigen. Die Anpassungen, die für die jeweiligen Aufgaben vorgenommen werden müssen, werden vor jeder Aufgabe kurz beschrieben.
+Die erste Variable in der Funktion, die angepasst werden muss, ist "int wiederholen". Sie steuert das Verhalten des Simulators. Ist sie auf 0 gesetzt, so führt der Simulator die Funktion "void run()" nur einmal aus, sonst wird "void run()" in einer Schleife mehrfach aufgerufen. Zu wissen in welchem Modus der Simulator läuft, ist sehr wichtig, wie in einem späteren Beispiel gezeigt wird. 
+Als zweites muss das Szenario geladen werden. Dies geschieht mithilfe der Funktion "void ladeSzenario(int szenarionummer)". Die ihr übergebene Szenarionummer bestimmt welches Szenario geladen wird. Das Szenario bestimmt Umgebung und Ziele.
+Im allgemeinen sollten zur Lösung der Aufgaben nur Funktionen des Roboters genutzt werden und nicht etwa Zugriffe auf die Karte selbst.
+ 
+Die Schleife
+Wenn die Variable "wiederholen" nicht auf 0 gesetzt ist, so wird wird eine while-Schleife durchlaufen. Diese läuft so lange wie das Ziel des geladenenen Szenarios noch nicht erfüllt ist. Ebenso wird die Schleife beendet, wenn der Roboter auf irgendeine Art kollidiert oder die Variable programmLaeuft anderweitig geändert wird. Normalerweise ist es für die Aufgaben nicht nötig diese Variablen zu ändern und es wird auch nicht empfohlen.
+In der Schleife wird als erstes die Karte auf der Konsole ausgegeben, dafür ist die Funktion "void zeichneKarte()" zuständig.
+Als nächstes wird die "void run()" Funktion ausgeführt, in der der Code zur Lösung der Aufgaben eingefügt werden muss. (Zum Beispiel in Form einer Bewegung des Roboters.)
+Die darauf folgende Funktion "void nachDurchlauf()" wird für den Szenarioablauf benötigt. Das "sleep(1000)" unterbricht die Auswertung des Programms für etwa eine Sekunde, sodass wir - ähnlich zum system("pause") - auch nachvollziehen können, was der Roboter tut.
+
+Die run()-Funktion
+
+//TODO weiter schreiben  >> Steffen Griese 201305272341
+
+In der Funktion "void run()" werden die Algorithmen, die in den Aufgaben gefordert sind, implementiert. 
+Zum besseren Verständnis werden zwei verschiedene Aufgaben im Beispiel vorgestellt:
+
+Beispiel:
+In der ersten Übung gab es eine Aufgabe in der ein Roboter durch ein Labyrinth gesteuert werden muss. Dies ist unser Beispielszenario und das Labyrinth sieht folgendermaßen aus:
+    
+    #########
+    #S#   #Z#
+    # ### # # 	S Start
+    #     # # 	Z Ziel
+    ##### # #
+    #     # #
+    # ##### #
+    #       #
+    #########
+
+In diesem Labyrinth soll der Roboter von Start zum Ziel geführt werden.
+
+----------------------------------
+
+Aufgabe 1:
+
+Schreiben sie einen Algorithmus, der den Roboter von seiner Startposition zum Ziel laufen lässt.
+Ihnen stehen folgende Funktionen zur Verfügung:
+
+	int U(int schritte) // bewegt den Roboter um eine übergebene Anzahl an schritten nach unten.
+	int O(int schritte) // bewegt den Roboter um eine übergebene Anzahl an schritten nach oben.
+	int L(int schritte) // bewegt den Roboter um eine übergebene Anzahl an schritten nach links.
+	int R(int schritte) // bewegt den Roboter um eine übergebene Anzahl an schritten nach rechts.
+
+Anpassungen: 
+	wiederholen=0;   //wiederholen auf 0 setzen 
+	ladeSzenario(3); // lade das 3 Szenario
+
+Die "wiederholen"-Variable muss auf 0 gesetzt und das dritte Szenario geladen werden.
+
+Auf zur Bearbeitung:
+Als Erstes öffnet man das Projekt, indem man in dem Ordner RoboSimulator auf die Datei RoboSimulator.dev doppelklickt. In DevC++ wird dann die Datei RoboSimulator.c ausgewählt. 
+Als nächstes werden die nötigen Anpassungen vorgenommen. Also setzt man in der Funktion "main()" die Variable "wiederholen" auf 0 und lädt das Szenario 3.
+
+[...]
+int main(int argc, char const *argv[])
+{
+	int wiederholen=0;
+    ladeSzenario(3);
+    zeichneKarte();
+[...]
+
+Wenn alles richtig gemacht wurde, sollte nach erfolgreichem Kompilieren und Starten des Programms die Konsole folgendes ausgeben:
+
+ 
+#########
+#S#   #Z#
+# ### # #
+#     # #
+##### # #
+#     # #
+# ##### #
+#       #
+#########
+Das Programm hat sich vor erreichen des Ziels beendet.
+Drücken Sie eine beliebige Taste . . .
+
+Anstelle des S sollte ein weißer Smiley stehen der den Roboter symbolisiert.
+Soweit ist also alles richtig. Nun wird die Funktion "run()", die bereits über der "main()"-Funktion steht, angepasst.
+Wenn man auf die Karte guckt sieht man das der Roboter als erstes 2 schritte nach unten laufen muss, da er in jeder anderen Richtung von Mauern umgeben ist. Also erweitern wir die run()-Funktion um die Funktion U und übergeben dieser eine 2 sodass sie den Roboter 2 Schritte nach unten bewegt:
+
+void run(){
+	U(2);
+}
+
+Wenn man nun F9 drückt um zu kompilieren und auszuführen, sollte der Roboter 2 Schritte nach unten gewandert sein.
+Wenn dies geklappt hat, kann man sich um die nächste Richtung kümmern. 
+Wendet man dieses Vorgehen bis zur letzten Richtung an, dann sollte die "run()"-Funktion wie folgt aussehen:
+
+void run()
+{
+    // Code zur Lösung der Aufgaben
+    U(2);
+    R(4);
+    U(2);
+    L(4);
+    U(2);
+    R(6);
+    O(6);
+}
+
+Dieser erste Teil des Beispieles hat uns nun gezeigt, wie man einen Algorithmus schreibt, der nur einmal durchlaufen wird und zum Ziel führt. Im Zweiten Teil des Beispiels soll die zweite Aufgabe der ersten Übung implementiert werden. Dies dient als Beispiel für einen Algorithmus für den die "run()"-Funktion mehrmals aufgerufen wird.
+
+-----------------------------
+
+Aufgabe 2:
+
+Schreiben sie einen Algorithmus, der den Roboter von seiner Startposition zum Ziel laufen lässt. Schreiben sie diesen so, dass die run()-Funktion mehrmals aufgerufen wird. 
+  
+Ihnen stehen folgende Funktionen zur Verfügung:
+
+	void drehe() // dreht den Roboter um 90 grad nach rechts
+	int geheNachVorn(int schritte) //lässt den Roboter in Blickrichtung um eine übergebene Anzahl an schritten gehen.
+	int frontSensor()// gib 0 zurück wenn im Feld vor dem Roboter eine Mauer (#) ist, ansonsten eine Zahl ungleich 0 (also 0 für falsch, alles andere für wahr). 
+	
+Anpassungen: 
+	wiederholen=1;   //wiederholen auf 1 setzen 
+	ladeSzenario(3); // lade das 3 Szenario
+
+Die "wiederholen"-Variable muss auf 1 gesetzt werden und das dritte Szenario geladen werden.
+
+Auf zur Bearbeitung:
+Wieder beginnt man mit allen nötigen Anpassungen, "wiederholen" auf 1 setzen und das dritte Szenario laden.
+Nun muss noch möglicherweise bereits vorhandener Code in der "run()"-Funktion auskommentiert oder gelöscht werden, da er für diese Aufgabe nicht gebraucht wird.
+Nun sollte man wieder ohne Probleme kompilieren können.
+Nun erweitert man die "run()"-Funktion. Da sie in dieser Aufgabe mehrmals durchlaufen wird, ist es sinnvoll, bei jedem Durchlauf nur einen Schritt zu machen. Dieser muss aber mit Bedacht gesetzt werden, da der Roboter beschädigt wird, wenn man ihn gegen eine Mauer lenkt und die Simulation dann endet. Mit der Funktion "int frontSensor()" kann man prüfen, ob sich vor dem Roboter eine Mauer befindet. Falls eine Mauer den Weg versperrt, können wir den Roboter mit Hilfe der Funktion "void drehe()" um 90 Grad im Uhrzeigersinn drehen. Wie in der ersten Übung dargestellt, sollte der Roboter nun alle Richtungen prüfen und nur, wenn alle anderen Wege versperrt sind, zurücklaufen.
+Demnach sollte dann die "run()"-Funktion wie folgt aussehen:
+
+void run()
+{
+    // Code zur Lösung dar aufgaben
+    if(!frontSensor())drehe();
+    if(!frontSensor()){ //2 Drehungen, um Zurücklaufen zu verhindern
+        drehe();
+        drehe();
+    }
+    if(!frontSensor()){ //3 Drehungen, um von nach links sehend zu nach hinten sehend zu kommen
+        drehe();
+        drehe();
+        drehe();
+    }
+    if(frontSensor())geheNachVorn(1);
+}
+
+
+
+###############################################################################################################
+### 					Zur Verfügung stehende Funktionn/Variablen
+###############################################################################################################
+
+###############################################################################################################
+### 					RoboSimulator.c
+###############################################################################################################
+
+int wiederholungen:
+	Kann auf 0 oder 1 gesetzt werden, je nach dem, ob ihr wollte, dass das Programm nur einmal die "run()"-Funktion aufruft (0) oder öfters (1).
+int programmLaeuft:
+	Eingeführt, um Algorithmen aus Algorithmen.c/.h zu ermöglichen, das Programm abzubrechen. Wird im so genannten "GameLoop" in "main()" abgefragt.
+
+void run():
+	Hauptfunktion in der die Algorithmen zum Erreichen der Szenarioziele verfasst werden.
+int main():
+	Programmstart. Hier müssen lediglich der "wiederholen" gesetzt und das gewünschte Szenario geladen werden.
+	
+###############################################################################################################
+### 					Die Karte
+###############################################################################################################
+
+#define nord 0
+#define nordOst 1
+#define ost 2
+#define suedOst 3
+#define sued 4
+#define suedWest 5
+#define west 6
+#define nordWest 7
+	
+	Diese "Variablen" können im Quelltext genutzt werden, um die Richtungen fest anzugeben. Vorsicht bei der Benennung eurer eigenen Variablen.
+
+extern int kartenXLaenge:
+extern int kartenYLaenge:
+	Die Ausmaße der Karte in x- und y-Richtung.
+
+extern int torusRaum:
+	Wenn torusRaum auf 1 gesetzt ist wird die Karte als ein Torus behandelt. D.h. verlässt man die Karte auf der einen Seite, erscheint der Roboter auf der anderen Seite. Standardmäßi ist dies nicht der Fall und somit würde der Roboter mit dem Kartenrand kollidieren.
+
+
+
+
+extern char **karte:
+	Die Karte selbst ist eine Matrix karte[x][y]. Der Ursprung(0,0) der Karte ist links oben und der Punkt (x-1,y-1) ist die rechte untere Ecke.
+
+typedef struct PositionStruct{
+	int x;
+	int y;
+} Position;
+	Der struct Position kann zur Speicherung/Übergabe/Rückgabe eines Punktes (x, y) genutzt werden.
+
+extern Position ziel:
+	In Szenarien, die eine feste Zielposition aufweisen, ist diese in dieser Position gespeichert.
+
+void initialisierung(int anzahlSpalten, int anzahlZeilen):
+	Erstellt die Karte und füllt diese mit Leerzeichen ' '. Setzt außerdem karteXLaenge und karteYLaenge.
+
+	Sztzt die Karte auf eine übergebene Karte mit den angegebenen werten für Weite und Höhe.
+void setKarte(char **kartenstr, int weite, int hoehe);
+
+char getZeichenAnPosition(Position position),
+char getZeichenAnKoordinaten(int x, int y):
+	Gibt das Zeichen an der Position zurück. Vor allem für den internen Gebrauch gedacht.
+
+
+int setZeichenAnPosition(char zeichen, Position position),
+int setZeichenAnKoordinaten(char zeichen, int x, int y):
+	Setzt das gegebene Zeichen an die gegebene Position. Sollte die Position außerhalb der Karte liegen, wird -1 zurückgegeben, sonst 0.
+
+void zeichneKarte():
+	Zeichnet die Karte, ebenfalls vor allem für den internen Gebrauch.
+
+Position getZiel():
+	Sofern die Karte ein Zielfeld besitzt, gibt diese Funktion dieses Feld zurück. Ansonsten die Position (-1, -1).
+
+
+###############################################################################################################
+### 					Der Roboter
+###############################################################################################################
+
+
+extern Position  roboterPosition:
+	Diese Variable speichert die Position des Roboters. Zur Definition von Position siehe "Karte".
+
+extern int blickrichtung:
+												701
+	Zeigt die Blickrichtung des Roboters R an:  6R2
+												543
+	Für die Definition der Richtungen siehe ebenfalls "Karte".
+
+extern char zwischenSpeicher:
+	Für den internen Gebrauch. Merkt sich das Zeichen, das an der Stelle war, bevor der Roboter diese betreten hat. So kann zum Beispiel nach dem ersten Schritt eines "Start-Ziel"-Szenarios, das 'S' dort gesetzt werden, wo der Roboter stand.
+	
+extern int kollision:
+	Speichert zu Auswertungszwecken, ob der Roboter mit irgendetwas kollidiert ist.
+
+
+void initialisiereRoboter(Position position,int blickrichtung):
+	"Erzeugt" den Roboter und setzt ihn auf die Karte.
+
+void setZwischenSpeicherZeichen(char c):
+	Setzt das Zeichen, das an der Stelle des Roboters platziert wird, wenn dieser sich das nächste mal weiterbewegt. Normalerweise genutzt, damit der Roboter auf seinem Weg nicht die Karte überschreibt.
+
+
+
+int getBlickrichtung():
+	Gibt die aktuelle Blickrichtung des Roboters zurück (siehe "Karte" für eine Definition der Richtungen).
+
+void setBlickrichtung(int blickRichtung):
+	Setzt die Blickrichtung des Roboters (siehe "Karte" für eine Definition der Richtungen).
+
+
+void drehe():
+	Dreht den Roboter, wie in der Übung, um 90 Grad im Uhrzeigersinn.
+
+
+void drehen(int grad,int drehRichtung);
+	Dreht den Roboter um "grad", dabei wird auf 45 Grad-Schritte gerundet. Ist drehRichtung 0, wird gegen den Uhrzeigersinn gedreht, für alle anderen Zahlen im Uhrzeigersinn. 
+
+
+void motorRechtsAn(int schritte):
+	Schaltet den rechten Motor an, bewirkt also eine Drehung gegen den Uhrzeigersinn. Die Schritte wirken sich auf die Gradzahl der Drehung aus. Schrittweite von 1 ist eine Drehung um 45 Grad gegen den Uhrzeigersinn, so würde aus der Blickrichtung 0 die Blickrichtung 7.
+
+void motorLinksAn(int schritte):
+	Schaltet den linken Motor an, bewirkt also eine Drehung im Uhrzeigersinn. Die Schritte wirken sich auf die Gradzahl der Drehung aus. Schrittweite von 1 ist eine Drehung um 45 Grad im den Uhrzeigersinn, so würde aus der Blickrichtung 0 die Blickrichtung 1.
+
+
+int motorLinksUndRechtsAn(int schritte):
+	Schaltet beide Motoren an und bewirkt die Bewegung in Blickrichtung um die übergebene Anzahl an Schritten. Die tatsächlich zurückgelegte Anzahl an Schritten wird zurückgegeben (bei einer Kollision stoppt der Roboter).
+	
+int geheNachVorn(int schritte):
+	Ruft "motorLinksUndRechtsAn()" auf, siehe entsprechende Beschreibung.
+
+
+
+int frontSensor(),
+int heckSensor(),
+int linkerSensor(),
+int rechterSensor():
+	Die Sensoren geben 0 (falsch) zurück wenn der jeweilige Sensor eine Wand erkannt hat, sonst 1 (true) 
+
+double getEntfernungZumZiel():
+	Gibt die Entfernung zum Ziel an, sofern eines existiert. Ansonsten -1.
+
+Position getFrontPosition():
+	Gibt die Position in Blickrichtung des Roboters zurück. Liegt die Position nicht innerhalb der Karte, ist mindestens eine der beiden Koordinaten negativ.
+	
+char getFrontZeichen():
+	Liefert das Zeichen in Blickrichtung des Roboters zurück.
+
+int greifeGegenstand():
+	Sammelt das vor dem Roboter liegende Item ein. Bei einem Fehlschlag wird 0 zurückgegeben.
+
+int getAnzahlGesammelterGegenstaende():
+	Gibt die Anzahl der bereits vom Roboter gefunden Gegenstände zurück.
+
+
+int O(int schritte):
+	Bewegt den Roboter um die übergebene Anzahl an Schritten nach oben. Gibt im erfolgsfall 1 zurück, sonst 0.
+
+
+int U(int schritte):
+	Bewegt den Roboter um die übergebene Anzahl an Schritten nach unten. Gibt im erfolgsfall 1 zurück, sonst 0.
+
+int L(int schritte):
+	Bewegt den Roboter um die übergebene Anzahl an Schritten nach links. Gibt im erfolgsfall 1 zurück, sonst 0.
+
+int R(int schritte):
+	Bewegt den Roboter um die übergebene Anzahl an Schritten nach rechts. Gibt im erfolgsfall 1 zurück, sonst 0.
+
+int bewegeRoboter(Position *von, Position *nach):
+	Bewegt den Roboter von position "von" zur position "nach", wenn die position "nach" frei ist. Gibt im Erfolgsfall zurück 1, sonst 0.
+	
+##########################################################
+###				Algorithmen
+##########################################################
+
+void ausDatei(char* pfad, int* programmLaeuft):
+	Liest die Anweisungen für den Roboter aus der gegebenen Datei. Bei jedem Aufruf wird genau ein Steuerbefehl abgearbeitet. Ein Beispiel für eine solche Datei, ist die Datei "Befehlsdatei-Beispiel.txt".
+	Die Funktion setzt programmLaeuft auf 0, wenn das Dateiende erreicht ist, ohne dass eine Schleife eingebaut worden ist.
+
+	
+

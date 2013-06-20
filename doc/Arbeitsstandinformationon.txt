@@ -1,0 +1,51 @@
+===========================================================
+=                    Arbeits stand Info                   =
+===========================================================
+
+Steffen 10.04 15:51
+ 
+Hallo alle,
+ich habe die kommentare aus der RoboSimulator.c hierher kopiert da sie dort nicht wirklich was zusuchen haben und bitte euch euren stand und neuchickeiten immer hierherein zu schreiben.bitte das neuste immer oben damit man nicht scrolen brauch.
+
+
+Thilo 20.12 01:31 :
+Das erste Szenario funktioniert nun (ohne die run logik)
+Habe die Zwischenspeicher-zeichen Verwendung, 
+die Entfernungsmessung (dafür merkt sich die Karte das letzte 'Z', das per setZeichen gesetzt wird)
+und die Abbruchbedingung eingebaut. 
+Dabei habe ich auch die Übergabe der SzenarioNummer an die Funktionen (außer ladeSzenario()) entfernt, da in 
+Szenario.h auch eine "Zustandsvariable" szenarioNummer gesetzt wird. Da wir pro Programmablauf eh nur ein Szenario laden können
+habe ich lieber die "Zustandsvariable" drin gelassen, dann müssen wir die Nummer bei den Aufrufen nicht immer mitschleppen.
+Außerdem ein fehlendes ! in der Bedingung der Schleife ergänzt, sodass der Loop nun auch funktioniert.
+
+
+Monty 20.12 14:26
+
+HeyHey! Der Roboter findet mit dem Frontsensor und dem DrehdichwennduaufeinHindernisstoesst-Algorithmus das Ziel!
+Ich habe den Sensor so entworfen, dass er "true" zurück gibt wenn vorne Frei ist.
+
+Es gibt leider noch ein Problem mit der motorLinksAn bzw. motorRechtsAn-Funktion. 
+Die beiden machen genau das Gegenteil -> Rechts dreht Links und Links dreht Rechts. Vieleicht kann sich das nochmal jemand ansehen.
+Des Weiteren brauch er bei mir zwischen den Drehvorgängen immer eine gefühlte Ewigkeit.
+
+
+Thilo 20.12 14:54:
+Die for-Schleifen in den einMotorAn() Funktionen gefixt. 
+Ich denke, dass Motor links an schon richtig ist: Du machst links an, rechts nicht, dein Roboter dreht sich nach rechts. 
+
+Thilo 21.12 15:10:
+Hab Roboter.c von den restlichen eklig-riesigen switch-Konstrukten befreit, nachdem Monty schon eins entfernt hatte. 
+Außerdem konnte ich dadurch viel leichter den Torus raum einbinden ; )
+
+Thilo 22.12 16:45:
+Nochn bisschen aufgeräumt. Vor allem die Funktionen getFrontPosition(), greifeGegenstand(), 
+istZeichenRelevant() und die Hilfsfunktion enthaelt() sind neu. Dazu hab ich noch getZeichenAnKoordinate eingefügt.
+Außerdem funktioniert das zweite Szenario mit dem Buchstabensammeln. Allerdings sammelt man momentan und merkt sich nur die Zahl
+der gesammelten Buchstaben und nicht, welche man schon gesammelt hat. Könnte man eventuell noch einfügen, um eine Art Inventar unter
+die Karte zu zeichnen.
+
+Thilo 25.01 11:28:
+Das Grundgerüst zum Dateieinlesen steht und die Befehle vor() und drehe() zusammen mit rand() funktionieren.
+Allerdings habe ich noch nie einen richtigen Parser geschrieben und schon gar nicht in C, sodass das Auswerten des Befehls eher 
+unschön aussieht^^
+

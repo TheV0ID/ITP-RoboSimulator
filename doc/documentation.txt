@@ -1,0 +1,133 @@
+ITP Roboter Simulator
+0 Einleitung
+Der RoboSimulator dient dazu, die im Rahmen des Informationstechnischen Praktikums entwickelten Algorithmen auf einem Computer losgelöst vom Lego-Roboter zu simulieren.
+
+1 Der Simulator
+
+1.1 RoboSimulator.c
+Die RoboSimulator.c ist die Hauptdatei des Simulators und enthält die main() Prozedur. In ihr wird das jeweilige Szenario anhand einer Szenarionummer geladen.
+
+1.2 Die Headerdateien
+
+In den verschiedenen Headerdateien sind die Definitionen der verschiedenen Prozeduren je nach Verwendungszweck zusammengefasst. Die Implementation ist in den gleichbenannten Sourcedateien zu finden.
+
+Die Einbindung der Headerdateien untereinander folgt folgender Struktur.
+
+	Karte.h 		Auswertung.h
+		|_______ ________|
+				|
+			Roboter.h
+				|
+			Szenario.h	Algorithmen.h
+				|_______ ____|
+						|
+					RoboSimulator.c
+
+Szenario.h bindet Roboter.h ein, welche wiederrum Karte.h sowie Auswertung.h einbindet.
+In der Datei RoboSimulator.c wird dann Szenario.h eingebunden, sodass in ihr alle Prozeduren zur Verfügung stehen. Außerdem können durch die Einbindung von Algorithmen.h diverse vorgefertigste Algorithmen zur Zielerfüllung genutzt werden. (Siehe 1.3.2 Algorithmen.h) 
+
+1.3 Header Übersicht
+Hier soll ein kurzer Einblick in die wichtigsten Headerdateien gegeben und deren Aufgaben erläutert werden.
+
+1.3.2 Algorithmen.h
+Die Datei Algorithmen.h bindet verschiedene Funktionen ein, die über die run()-Methode genutzt werden können, um das Szenarioziel zu erreichen. So wird beispielsweise die Funktion ausDatei(char* pfad, int* programmLaeuft) angeboten, welche es erlaubt, die Steuerbefehle für den Roboter aus einer anzugebenden Datei zu laden. Dabei soll der Pointer auf eine int-Variable übergeben werden, anhand derer in der run()-Methode geprüft werden kann, ob alle Steuerbefehle der Datei abgearbeitet wurden. Ist dies nicht der Fall, kann bei jedem Aufruf von run() erneut ausDatei(...) aufgerufen werden, um einen weiteren Befehl aus der Datei zu laden.
+In Algorithmen sollen aber auch weitere Algorithmen angeboten werden. Diese sind allerdings noch in Arbeit.
+
+1.3.3 Auswertung.h
+Für Messzwecke können je nach Szenariowunsch verschieden Daten gesammelt werden. Zum Beispiel: Wie viele Schritte hat der Roboter gemacht oder wie oft hat er sich gedreht. Die einzelnen Messungen werden in den jeweiligen Prozeduren ausgeführt, aber alle zur Auswertung relevanten Variablen und Prozeduren sind in der Auswertung.h anzulegen.
+
+1.3.4 Hilfsfunktionen.h
+Diese Datei bündelt einige Funktionen, die nicht direkt einem "Aufgabenfeld" zugeordnet werden können. Beispielsweise ist die Funktion enthaelt(...), die prüft, ob ein Zeichen in einem Array von Zeichen enthalten ist, nicht spezifisch für den Roboter, die Karte oder ein anderes "Aufgabenfeld", sodass diese getrennt notiert ist.
+
+1.3.5 Karte.h
+In der Simulation wird eine Umgebung für den Roboter benötigt, in der der Roboter agiert. Dies können Labyrinthe sein oder einfache Räume mit Gegenständen. Alle Prozeduren und Variablen die erforderlich für die Umgebungssimulation sind, werden hier zusammengefasst. Im Folgenden wird der Begriff Karte für die Szenarioumgebung verwendet.
+
+Die Maße der Karte werden in den Integervariablen kartenXLaenge für die Breite der Karte und kartenYLaenge für die Höhe der Karte gespeichert.
+
+Die eigentliche Karte ist durch ein zweidimensionale int-Array namens karte dargestellt.
+
+Der Typ Position ist ein struct zur Kapselung von x,y-Koordinaten.  
+
+1.3.6 Roboter.h
+Der simmulierte Roboter hat verschiedenste Funktionen, die Sensoren und Motoren simulieren, sowie einige für die Simulation wichtige Attribute (z.B. die Blickrichtung, die angibt, in welche Richtung die Front des Roboters zeigt). Im Roboter.h Header sind alle Prozeduren die Funktionen, Motoren und Sensoren des Roboters darstellen, zusammengefasst. Darüber hinaus enthält der Header Variablen und interne Prozeduren die für die Simulation wichtig sind.
+
+Um die Position des Roboters in der Karte wiederzugeben steht die Position-Variable roboterPosition zur Verfügung.
+
+Für die Simulation ist die Ausrichtung des Roboters wichtig. Diese wird, wie oben erwähnt, durch die Variable blickrichtung repräsentiert. Sie ist eine Integer Variable zwischen 0 und 7. Wobei die 0 den Blick auf das feld in Y-Richtung über dem Roboter R darstellt. Alle weiteren Zahlen stellen eine weitere Drehung um 45° im Uhrzeigersinn dar:
+     x
+ +------> 
+ |  701     	 ^
+y|  6R2 	<R>
+ |  543 	 V
+ v    
+
+Angenommen der Roboter steht auf Position (x,y) und seine Blickrichtung ist 2, so wäre das Feld, auf dem er nach einem Schritt in die Blickrichtung steht, das Feld (x+1,y)
+
+1.3.7 Szenario.h
+Um verschiedene Aufgaben anzubieten, gibt es die Szenarios. Diese werden über Szenario.h gestartet. Um ein Szenario zu identifizieren gibt es zu jedem eine szenarioNummer, mit deren Hilfe das Szenario über ladeSzenario(int) geladen werden kann.
+Die Szenariofunktionen initialisieren die Karte mit allen erforderlichen Hindernissen, Interaktions-"Objekten" und dem Roboter. 
+
+2 Erste Simulation
+
+Für die erste Simulation sei folgende Aufgabe gegeben.
+	#########
+	#S#   #Z#
+	# ### # #
+	#     # #   ^
+	##### # #  <R>
+	#     # #   v
+	# ##### #
+	#       #
+	#########
+
+In dem abgebildeten Labyrinth soll der Roboter R den weg von S (Start) nach Z (Ziel) finden.
+
+2.1 Senario anlegen
+Um ein Szenario so anzulegen das es über die Funktion void ladeSzenario(int szenario), der senario.h geladen werden kann, erkweitern wir die implementation der Funktion  in der senario.c. Das in ihr stehende Switch läd die jeweiligen Szenarios. Sofern kein freies szenario mehr übrig ist, legen wir einen weiteren case fall an und laden darin die funktion szenarioX() wobei X eine noch nicht vergebene Senario nummer seien soll. Für unseren. Fall nehmen wir szenario3() für dass bereits ein case Fall  im switch vorhanden ist.
+
+Als nächstes müssen wir die funktion, die wir im vorangeangen schritt im case fall aufgerufen haben, implementieren. Dazu deklarieren wir diese in der senario.h und implementieren sie in der senario.c.
+
+In der nun geschriebenen funktion fangen wir nun an unser szenario zu verwirklichen.
+Zu erst initialieren wir die Karte. In unserem Fall soll sie 9x9 Felder groß sein.
+
+	initialisierung(9,9)
+
+Als nächstes sollen die Mauern unseres Labyrinthes gezogen werden, sie werden mit '#' gekonzeichnet. Um ein beliebiges zeichen in die Karte zu zeichen steht die Funktion int setZeichenAnKoordinaten(char zeichen, int x, int y) zur verfügung. 
+
+	for (i=0;i<kartenXLaenge;i++)
+		for (j=0;j<kartenYLaenge;j++)
+			setZeichenAnKoordinaten('#', i, j);
+ 	
+	for(i=1;i<8;i++)setZeichenAnKoordinaten(' ', 7, i);
+    	for(i=1;i<8;i++)setZeichenAnKoordinaten(' ', i, 7);
+    	setZeichenAnKoordinaten(' ', 1, 6);
+	for(i=1;i<3;i++)setZeichenAnKoordinaten(' ', 1, i);
+	for(i=1;i<6;i++){
+        	setZeichenAnKoordinaten(' ', i, 3);
+        	setZeichenAnKoordinaten(' ', i, 5);
+    	}
+    	setZeichenAnKoordinaten(' ', 5, 4);
+    	setZeichenAnKoordinaten(' ', 5, 2);
+    	setZeichenAnKoordinaten(' ', 5, 1);
+    	setZeichenAnKoordinaten(' ', 4, 1);
+    	setZeichenAnKoordinaten(' ', 3, 1);
+
+Der Roboter soll ja von einem startpunkt zu einem Zielpunkt gehen. Diese Punkte sollen in der Karte durch 'S' und 'Z' repräsentiert werden. Nun da das labyrinth fertig ist, befassen wir uns mit der Startposition. Da der Roboter auf dem Startpunkt startet wird das 'S' zu erst nicht sichtbar sein, und soll somit vom Robotor am startpunkt hinterlassen werden wenn er diesen verlässt. Daher laden wir den buchstaben S in den Zwischenspeicher in der bei normaler bewegung eine feldmakierung zwischen geseichert werden kann. 
+
+	zwischenSpeicher='S';
+
+Nun legen wir noch die Position fest an der der Roboter starten soll.
+
+	Position position = {1, 1 };
+
+Mit dieser Position initalisieren wir nun den Roboter. Da in diesem Zenario die Blickrichtung nicht wichtig ist setzen wir diese auf 2.
+
+	initialisiereRoboter(position, 2);
+
+Da unser Robotor aber nicht in dem labyrinth Gefangen seien soll sondern ein Ziel erreichen kann, muss auch dieses gesetzt werden. Wie beim Roboter so setzen wir auch hier eine Position. Das ziel soll auf der position 7,1 sein, also speichern wir unsere position in der variablen ziel und setzen an den selben Koortinaten den buchstaben 'Z'.
+
+	Position ziel3 = {7, 1 };
+	ziel = ziel3;
+    	setZeichenAnKoordinaten('Z', 7, 1);
+
+Das ist alles was wir für unser kleines Szenario benötigen damit es geladen wird muss in der main() in RoboSimulator.c der übergebene parameter der funktion ladeSzenario(x)  auf 3 gesezt werden.

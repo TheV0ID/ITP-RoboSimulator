@@ -14,4 +14,21 @@ void ausDatei(char* pfad, int* programmLaeuft);
 */
 int enthaelt(char zeichenArray[], int laenge, char zeichen);
 
+int sucheGespeicherteKoordinaten(int x,int y, char* pfad,int* zeile);
+
+int anhaengen(char* pfad,char* inhalt);
+
+int wieLangIstDatei(char* pfad);
+
+int einfuegenInZeile(char* pfad,int zeile,char* str);
+
+int speichereInDatenbank(char* inhalt,int x,int y,char* pfad);
+
+int holeInhaltAusDatei(char* inhalt,int inhaltLaenge, int x, int y, char* pfad);
+
+void umsehen(char* feldString);
+
+int naechstesFeld(char* datenbank);
+
+
 #endif // ALGORITHMEN_H_INCLUDED

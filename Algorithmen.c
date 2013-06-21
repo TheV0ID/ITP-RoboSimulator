@@ -4,6 +4,7 @@
 #include "Algorithmen.h"
 #include "Roboter.h"
 
+
 //Variablen für Befehle aus einer Datei
 FILE * datei;
 int sprungmarke = -1;
@@ -117,3 +118,250 @@ int enthaelt(char zeichenArray[], int laenge, char zeichen) {
 	}
 	return 0;
 }
+
+
+int sucheGespeicherteKoordinaten(int x,int y, char* pfad,int* zeile){
+    int i,
+        x2,
+        y2;
+    char *str = malloc(sizeof(char)*150);
+
+    FILE* db = fopen(pfad,"r");
+    if(db == NULL){
+            printf("Fehler beim laden der Datei: %s\n",pfad);
+            return 1;
+    }
+    // falls die Koordinaten noch nicht gespeichert wurden, schreibe -1 in "zeile"
+    *zeile=-1;
+    for(i=1;fgets(str,150,db)!= NULL;++i){
+        if(i){
+            sscanf(str,"%i; %i; %*s ;",&x2,&y2);
+            if(x==x2&&y==y2){
+                // falls passende Koordinaten gefunden wurden, schreibe die Zeile "i" in der sie gefunden wurden in "zeile"
+                *zeile=i;
+            }
+        }
+    }
+    fclose(db);
+    free(db);
+    free(str);
+
+    return 0;
+}
+
+int anhaengen(char* pfad,char* inhalt){
+    FILE* db = fopen(pfad, "a");
+    if(db == NULL){
+        printf("Fehler bei Dateizugriff!\n");
+        return 1;
+    }
+    fprintf(db, "%s",inhalt);;
+    fclose(db);
+
+    free(db);
+    return 0;
+}
+
+int wieLangIstDatei(char* pfad){
+    int len;
+
+    FILE* db = fopen(pfad, "r");
+    if(db == NULL){
+        printf("Fehler bei Dateizugriff!\n");
+        return -1;
+    }
+    char* str=malloc(sizeof(char)*250);
+    for(len=0;fgets(str,250,db)!=NULL;len++);
+    fclose(db);
+
+    free(db);
+    free(str);
+    return len;
+}
+
+int einfuegenInZeile(char* pfad,int zeile,char* str){
+    int size = wieLangIstDatei(pfad);
+    int i,inhaltslaenge=250;
+    char** dateiInhalt=malloc(size*sizeof(char*));
+    for(i=0;i<size;i++){
+        dateiInhalt[i]=malloc(inhaltslaenge*sizeof(char));
+    }
+
+    FILE* db = fopen(pfad, "r");
+    if(db == NULL){
+        printf("Fehler bei Dateizugriff!\n");
+        return 1;
+    }
+    for(i=0;i<size;i++){
+        fgets(dateiInhalt[i],inhaltslaenge,db);
+    }
+    strcpy(dateiInhalt[zeile-1],str);
+
+    fclose(db);
+    db = fopen(pfad, "w");
+    if(db == NULL){
+        printf("Fehler bei Dateizugriff!\n");
+        return 1;
+    }
+    for(i=0;i<size;i++){
+        fprintf(db,"%s",dateiInhalt[i]);
+    }
+    fclose(db);
+
+    for(i=0;i<size;i++){
+        free(dateiInhalt[i]);
+    }
+    free(dateiInhalt);
+    free(db);
+
+    return 0;
+}
+
+int speichereInDatenbank(char* inhalt,int x,int y,char* pfad){
+    int zeile;
+    if(sucheGespeicherteKoordinaten(x, y, pfad, &zeile)){
+        return 1;
+    }
+    char* str=malloc(sizeof(char)*250);
+    sprintf(str, "%i; %i; %s ;\n",x,y,inhalt);
+    if(zeile==-1){
+        anhaengen(pfad,str);
+    }else{
+        einfuegenInZeile(pfad,zeile,str);
+    }
+    free(str);
+    return 0;
+}
+
+int holeInhaltAusDatei(char* inhalt,int inhaltLaenge, int x, int y, char* pfad){
+    int pos;
+    if(sucheGespeicherteKoordinaten(x,y,pfad,&pos)){
+        return 1;
+    }
+    strcpy(inhalt,"F0_N0_O0_S0_W0");
+    if(pos!=-1){
+        int i;
+        FILE* db = fopen(pfad, "r");
+        if(db == NULL){
+            printf("Fehler bei Dateizugriff!\n");
+            return 1;
+        }
+        for(i=0;i<pos;i++){
+            fgets(inhalt,inhaltLaenge,db);
+            sscanf(inhalt,"%*i; %*i; %s ;",inhalt);
+        }
+        fclose(db);
+        free(db);
+    }
+    return 0;
+}
+
+void umsehen(char* feldString){
+    int blick,
+        norden=0,
+        osten=0,
+        sueden=0,
+        westen=0;
+
+    blick=blickrichtung;
+    blickrichtung=nord;
+    if(frontSensor())norden=1;
+    if(rechterSensor())osten=1;
+    if(heckSensor())sueden=1;
+    if(linkerSensor())westen=1;
+    blickrichtung=blick;
+
+    sprintf(feldString,"F1_N%i_O%i_S%i_W%i", norden, osten, sueden, westen);
+}
+
+int naechstesFeld(char* datenbank){
+    int b=blickrichtung,
+        ausgaenge=0,
+        feld,
+        hinten,
+        min,
+        res;
+    int* fi = malloc(sizeof(int)*8);
+    fi[0]=0; fi[1]=9999999;// ausgangNord, Feldwerd nord
+    fi[2]=0; fi[3]=9999999;// ausgangWest, Feldwerd west
+    fi[4]=0; fi[5]=9999999;// ausgangSued, Feldwerd sued
+    fi[6]=0; fi[7]=9999999;// ausgangOst, Feldwerd ost
+
+    char* frontFeld = malloc(sizeof(char)*250);
+    char* Feldstr = malloc(sizeof(char)*250);
+
+    if(holeInhaltAusDatei(Feldstr, 250, roboterPosition.x, roboterPosition.y, datenbank)){
+        return -1;
+    }
+    sscanf(Feldstr,"F%i_N%i_O%i_S%i_W%i",&feld, &fi[nord], &fi[ost], &fi[sued], &fi[west]);
+    if(fi[nord]){
+        blickrichtung=nord;
+        if(holeInhaltAusDatei(frontFeld, 250, getFrontPosition().x, getFrontPosition().y, datenbank)){
+            return -1;
+        }
+        sscanf(frontFeld,"F%i_N%*i_O%*i_S%*i_W%*i", &fi[nord+1]);
+        ausgaenge++;
+    }
+    if(fi[ost]){
+        blickrichtung=ost;
+        if(holeInhaltAusDatei(frontFeld, 250, getFrontPosition().x, getFrontPosition().y, datenbank)){
+            return -1;
+        }
+        sscanf(frontFeld,"F%i_N%*i_O%*i_S%*i_W%*i", &fi[ost+1]);
+        ausgaenge++;
+    }
+    if(fi[sued]){
+        blickrichtung=sued;
+        if(holeInhaltAusDatei(frontFeld, 250, getFrontPosition().x, getFrontPosition().y, datenbank)){
+            return -1;
+        }
+        sscanf(frontFeld,"F%i_N%*i_O%*i_S%*i_W%*i", &fi[sued+1]);
+        ausgaenge++;
+    }
+    if(fi[west]){
+        blickrichtung=west;
+        if(holeInhaltAusDatei(frontFeld, 250, getFrontPosition().x, getFrontPosition().y, datenbank)){
+            return -1;
+        }
+        sscanf(frontFeld,"F%i_N%*i_O%*i_S%*i_W%*i", &fi[west+1]);
+        ausgaenge++;
+    }
+    blickrichtung=b;
+    hinten = (b+4)%8;
+
+    min=fi[nord+1];
+    if(fi[ost+1]<min)min=fi[ost+1];
+    if(fi[sued+1]<min)min=fi[sued+1];
+    if(fi[west+1]<min)min=fi[west+1];
+
+    //Reihenfolge für Bewegung nächstes Feld liegt:
+    if(fi[blickrichtung]&&fi[blickrichtung+1]==min){// vorne
+        res=blickrichtung;
+    }else{
+        drehen(90,0);
+        // rechts
+        if(fi[blickrichtung]&&fi[blickrichtung+1]==min){
+            res=blickrichtung;
+        }else{
+            drehen(90,0);drehen(90,0);
+            b=(b+4)%8;// links
+            if(fi[blickrichtung]&&fi[blickrichtung+1]==min){
+                res=blickrichtung;
+            }else{
+                drehen(90,0);drehen(90,0);drehen(90,0);
+                // hinten
+                if(fi[blickrichtung]&&fi[blickrichtung+1]==min){
+                    res=blickrichtung;
+                }
+            }
+        }
+    }
+    printf("\nAusgaenge: %i, v=%i,h=%i |=>>> res = %i\n",ausgaenge,blickrichtung,hinten,res);
+    printf("\n\t\t%i\n\t%i\t%i\t%i\n\t\t%i\n", fi[nord+1], fi[west+1], feld, fi[ost+1], fi[sued+1]);
+
+    //Arrays freigeben
+    free(fi);free(frontFeld);free(Feldstr);
+    return res;
+}
+
+

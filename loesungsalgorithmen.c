@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include "loesungsalgorithmen.h"
-#include "Roboter.h"
+#include "Szenario.h"
 
 void runSzenario3OURL(){
     if(schrittZaehler<2)U(1);
@@ -41,6 +41,7 @@ void runSzenario4rightTurn(){
     }
     geheNachVorn(1);
 }
+
 void runSzenario3Karteerstellen(){
     int zellencode;
     int zeichen;
@@ -131,7 +132,6 @@ void runSzenario3Karteerstellen(){
     printf("zellencode:%i\t%c \nfront:%i \nrechts:%i \nheck:%i \nlinks:%i \n",zellencode,zeichen,frontSensor(),rechterSensor(),heckSensor(),linkerSensor());
 }
 
-
 void runSzenario3quickReturn(){
     int *a=hole1dSpeicherArray();
     if(zwischenSpeicher=='Z'){
@@ -159,5 +159,50 @@ void runSzenario3quickReturn(){
         if(blickrichtung==6)
         a[0]--;
     }
+}
 
+void runSzenario4files(){
+    int feld,
+        norden,
+        osten,
+        sueden,
+        westen,
+        richtungNaechstesFeld;
+
+    char* datenbank = DatenbankDateiPfad;
+    char* feldString = malloc(sizeof(char)*250);
+    char* frontFeld = malloc(sizeof(char)*250);
+
+    holeInhaltAusDatei(feldString, 250, roboterPosition.x, roboterPosition.y, datenbank);
+    sscanf(feldString,"F%i_N%i_O%i_S%i_W%i",&feld, &norden, &osten, &sueden, &westen);
+
+    // wenn das Feld noch nicht besucht ist, sieh dich um und gehe ein Feld weiter
+    if(!feld){
+        umsehen(feldString);
+        sscanf(feldString,"F%i_N%i_O%i_S%i_W%i",&feld, &norden, &osten, &sueden, &westen);
+    }else{
+        //falls schon besucht, erhöhe den Feld-counter um 1
+        feld++;
+    }
+    //speichere aktuelles Feld
+    sprintf(feldString,"F%i_N%i_O%i_S%i_W%i",feld, norden, osten, sueden, westen);
+    speichereInDatenbank(feldString,roboterPosition.x,roboterPosition.y,datenbank);
+
+    richtungNaechstesFeld=naechstesFeld(datenbank);
+
+    // berechnet ob man in die entgegengesetzte Richtung gehen soll
+    if((4+blickrichtung)%8==richtungNaechstesFeld){
+        //wenn der Robotor in einer Sackgasse steckt und nur nach Hinten gehen kann, erhöhe den Feld wert noch einmal um Eins,
+        //damit nicht im naechsten Feld der Roboter auf die Idee kommt das aktüelle Sackgassenfeld wieder zu besuchen.
+        feld++;
+        sprintf(feldString,"F%i_N%i_O%i_S%i_W%i",feld, norden, osten, sueden, westen);
+        speichereInDatenbank(feldString,roboterPosition.x,roboterPosition.y,datenbank);
+    }
+    // gucke in die Richtung des nächsten Feldes
+    setBlickrichtung(richtungNaechstesFeld);
+
+	printf("\n x=%i, y=%i feld: %s naechstesFeld %i \n",roboterPosition.x,roboterPosition.y,feldString,richtungNaechstesFeld);
+    // und gehe nach vorne
+    geheNachVorn(1);
+    free(datenbank);free(feldString);free(frontFeld);
 }

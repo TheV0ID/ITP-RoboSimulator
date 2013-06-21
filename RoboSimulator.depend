@@ -119,14 +119,14 @@
 
 1371757796 d:\prog\c\bla\robosimulator\hilfsfunktionen.h
 
-1371846886 source:d:\prog\c\itp\itp-robosimulator\algorithmen.c
+1371848050 source:d:\prog\c\itp\itp-robosimulator\algorithmen.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"Algorithmen.h"
 	"Roboter.h"
 
-1371846886 d:\prog\c\itp\itp-robosimulator\algorithmen.h
+1371847440 d:\prog\c\itp\itp-robosimulator\algorithmen.h
 
 1371755979 d:\prog\c\itp\itp-robosimulator\roboter.h
 	"Karte.h"
@@ -149,12 +149,13 @@
 1371757574 source:d:\prog\c\itp\itp-robosimulator\karte.c
 	"Karte.h"
 
-1371845693 source:d:\prog\c\itp\itp-robosimulator\loesungsalgorithmen.c
+1371848050 source:d:\prog\c\itp\itp-robosimulator\loesungsalgorithmen.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"loesungsalgorithmen.h"
 	"Roboter.h"
+	"Szenario.h"
 
 1371757248 d:\prog\c\itp\itp-robosimulator\loesungsalgorithmen.h
 
@@ -163,23 +164,22 @@
 	<math.h>
 	"Szenario.h"
 
-1371845693 d:\prog\c\itp\itp-robosimulator\szenario.h
+1371847869 d:\prog\c\itp\itp-robosimulator\szenario.h
 	"Roboter.h"
 
-1371845693 source:d:\prog\c\itp\itp-robosimulator\szenario.c
+1371847943 source:d:\prog\c\itp\itp-robosimulator\szenario.c
 	<time.h>
 	"Szenario.h"
-	"Hilfsfunktionen.h"
+	<string.h>
 
 1371845657 d:\prog\c\itp\itp-robosimulator\hilfsfunktionen.h
 
-1371845693 source:d:\prog\c\itp\itp-robosimulator\robosimulator.c
+1371847869 source:d:\prog\c\itp\itp-robosimulator\robosimulator.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
 	<unistd.h>
 	"Szenario.h"
-	"Algorithmen.h"
 	"loesungsalgorithmen.h"
 	<windows.h>
 	<unistd.h>

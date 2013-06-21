@@ -1,11 +1,12 @@
 #include<time.h>
 #include "Szenario.h"
-#include "Hilfsfunktionen.h"
+#include<string.h>
 
 
 int szenarioNummer=1;
 //Speichert welche Zeichen relevant sind, zB zum Einsammeln
-char * relevanteZeichen;
+char* relevanteZeichen;
+char* DatenbankDateiPfad;
 int laengeRelevanteZeichen = 0;
 //
 void ladeSzenario(int szenario){
@@ -145,6 +146,18 @@ void szenario3(){
     ziel = ziel3;
 }
 void szenario4(){
+    DatenbankDateiPfad = malloc(250*sizeof(char));
+    strcpy(DatenbankDateiPfad,".\\tmp\\EntscheidungsDatenbank.csv");
+    //Sollte die Datei nicht vorhanden sein, lege sie mit einer passenden Kopfzeile an
+    FILE* datei = fopen(DatenbankDateiPfad, "r");
+    if(datei == NULL){
+            datei=fopen(DatenbankDateiPfad, "w");
+            fprintf(datei, "X; Y; Inhalt ;\n");
+    }
+    fclose(datei);
+    free(datei);
+
+
     int i,spalten=40,zeilen=20;
     initialisierung(spalten,zeilen);
     char **arr;

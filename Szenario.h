@@ -9,6 +9,11 @@
 extern int szenarioNummer;
 
 /*
+ * Speichert den pfad der zu verwändenden csv datei
+ * */
+extern char* DatenbankDateiPfad;
+
+/*
  * Laedt das Szenario mit der uebergebenen Nummer
  * */
 void ladeSzenario(int szenarioNummer);

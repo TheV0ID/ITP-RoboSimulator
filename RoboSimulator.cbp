@@ -39,10 +39,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Auswertung.h" />
-		<Unit filename="Hilfsfunktionen.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Hilfsfunktionen.h" />
 		<Unit filename="Karte.c">
 			<Option compilerVar="CC" />
 		</Unit>

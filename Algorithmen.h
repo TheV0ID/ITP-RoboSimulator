@@ -9,4 +9,9 @@ Setzt programmLaeuft auf 0, wenn das Dateiende erreicht ist, ohne dass eine Schl
 */
 void ausDatei(char* pfad, int* programmLaeuft);
 
+/*
+* Gibt wahr (1) zurück, wenn das gegebene Array mit der Länge laenge, das gegebene Zeichen enthaelt.
+*/
+int enthaelt(char zeichenArray[], int laenge, char zeichen);
+
 #endif // ALGORITHMEN_H_INCLUDED

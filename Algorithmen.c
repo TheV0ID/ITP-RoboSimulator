@@ -85,6 +85,7 @@ int werteAus(char befehl[]) {
 
 //Liest die Befehle für den Roboter aus einer Datei
 void ausDatei(char* pfad, int* programmLaeuft) {
+
 	initialisiere(pfad);
 	char zeile[100];
 	int sinnvollerBefehlGefunden = 0;
@@ -104,4 +105,15 @@ void ausDatei(char* pfad, int* programmLaeuft) {
 			sinnvollerBefehlGefunden = 1;
 		}
 	}
+}
+
+
+int enthaelt(char zeichenArray[], int laenge, char zeichen) {
+	int i = 0;
+	for(; i < laenge; i++) {
+		if(zeichenArray[i] == zeichen) {
+			return 1;
+		}
+	}
+	return 0;
 }

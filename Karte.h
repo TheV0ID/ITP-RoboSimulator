@@ -4,6 +4,8 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+#include "Algorithmen.h"
+
 #define nord 0
 #define nordOst 1
 #define ost 2

@@ -29,14 +29,16 @@ int millisleep(unsigned ms){
 #endif
 }
 
-// Globale varablen
+// Globale Variable
 int programmLaeuft = 1;
+
 void vorEnde(){
     if(istZielErreicht()) {
-		printf("Ziel erreicht!\n%i Schritte und %i 45 Grad Drehungen hat der Roboter gemacht.\n",schrittZaehler,drehungsZaehler);
+		printf("Ziel erreicht!\n%i Schritte und %i 90 Grad Drehungen hat der Roboter gemacht.\n",schrittZaehler,drehungsZaehler);
+		system("pause");
 	} else {
 		printf("Das Programm hat sich vor erreichen des Ziels beendet.\n");
-
+		system("pause");
 	}
 	int i;
     if(szenarioNummer==1){
@@ -47,9 +49,7 @@ void vorEnde(){
 }
 /*
     Hilfsfunktionen für runSzenario4files;
-*/
-/*
-    Hilfsfunktionen für runSzenario4files;
+	Ausnahmsweise in dieser Datei. Ansonsten finden sich solche konkreten Algorithmen in Algorithmen.c/.h
 */
 
 int sucheGespeicherteKoordinaten(int x,int y, char* pfad,int* zeile){
@@ -63,18 +63,17 @@ int sucheGespeicherteKoordinaten(int x,int y, char* pfad,int* zeile){
                 printf("Fehler beim laden der Datei: %s\n",pfad);
                 return 1;
         }
-        // falls die Koordinaten noch nicht gespeichert wurden schreibe in zeile -1
+        // falls die Koordinaten noch nicht gespeichert wurden, schreibe -1 in "zeile"
         *zeile=-1;
         for(i=1;fgets(str,150,db)!= NULL;++i){
             if(i){
                 sscanf(str,"%i; %i; %*s ;",&x2,&y2);
                 if(x==x2&&y==y2){
-                    // falls passende koordinaten gefunden wurden schreibe die Zeile(i) in der sie gefunden würden in zeile
+                    // falls passende Koordinaten gefunden wurden, schreibe die Zeile "i" in der sie gefunden wurden in "zeile"
                     *zeile=i;
                 }
             }
         }
-//printf("\nA\n");
         fclose(db);
         free(db);
         free(str);
@@ -128,8 +127,6 @@ int einfuegenInZeile(char* pfad,int zeile,char* str){
     for(i=0;i<size;i++){
         fgets(dateiInhalt[i],inhaltslaenge,db);
     }
-printf("ersetze:/ndateiInhalt: %s", dateiInhalt[zeile-1]);
-printf("        str: %s",str);
     strcpy(dateiInhalt[zeile-1],str);
 
     fclose(db);
@@ -188,7 +185,6 @@ int holeInhaltAusDatei(char* inhalt,int inhaltLaenge, int x, int y, char* pfad){
         fclose(db);
         free(db);
     }
-    //printf("\n\n /:%s:\\\n\n",inhalt);
     return 0;
 }
 
@@ -217,7 +213,6 @@ int naechstesFeld(char* datenbank){
         hinten,
         min,
         res;
-        //
     int* fi = malloc(sizeof(int)*8);
     fi[0]=0; fi[1]=9999999;// ausgangNord, Feldwerd nord
     fi[2]=0; fi[3]=9999999;// ausgangWest, Feldwerd west
@@ -231,7 +226,6 @@ int naechstesFeld(char* datenbank){
         return -1;
     }
     sscanf(Feldstr,"F%i_N%i_O%i_S%i_W%i",&feld, &fi[nord], &fi[ost], &fi[sued], &fi[west]);
-    //printf("\nFeldstr: %s   ,x=%i,y=%i\n",Feldstr,roboterPosition.x, roboterPosition.y);
     if(fi[nord]){
         blickrichtung=nord;
         if(holeInhaltAusDatei(frontFeld, 250, getFrontPosition().x, getFrontPosition().y, datenbank)){
@@ -272,22 +266,22 @@ int naechstesFeld(char* datenbank){
     if(fi[sued+1]<min)min=fi[sued+1];
     if(fi[west+1]<min)min=fi[west+1];
 
-    //geh reienfolge
-    if(fi[blickrichtung]&&fi[blickrichtung+1]==min){//b = vorne
+    //Reihenfolge für Bewegung nächstes Feld liegt:
+    if(fi[blickrichtung]&&fi[blickrichtung+1]==min){// vorne
         res=blickrichtung;
     }else{
         drehen(90,0);
-        //b=(b+2)%8;// b+2 = rechts
+        // rechts
         if(fi[blickrichtung]&&fi[blickrichtung+1]==min){
             res=blickrichtung;
         }else{
             drehen(90,0);drehen(90,0);
-            b=(b+4)%8;// b+2+4 = b+6 = links
+            b=(b+4)%8;// links
             if(fi[blickrichtung]&&fi[blickrichtung+1]==min){
                 res=blickrichtung;
             }else{
                 drehen(90,0);drehen(90,0);drehen(90,0);
-                //b=(b+6)%8;// b+2+4+6 = b+12 => b+4 = hinten
+                // hinten
                 if(fi[blickrichtung]&&fi[blickrichtung+1]==min){
                     res=blickrichtung;
                 }
@@ -297,20 +291,19 @@ int naechstesFeld(char* datenbank){
     printf("\nAusgaenge: %i, v=%i,h=%i |=>>> res = %i\n",ausgaenge,blickrichtung,hinten,res);
     printf("\n\t\t%i\n\t%i\t%i\t%i\n\t\t%i\n", fi[nord+1], fi[west+1], feld, fi[ost+1], fi[sued+1]);
 
-    // arrays freigeben
+    //Arrays freigeben
     free(fi);free(frontFeld);free(Feldstr);
     return res;
 }
 
 
 void runSzenario4files(){
-    //      F0_N0_O0_S0_W0   printf("\nA\n");
     int feld,
         norden,
         osten,
         sueden,
         westen,
-        rchtingNaechsetFeld;
+        richtungNaechstesFeld;
 
     char* datenbank = ".\\tmp\\EntscheidungsDatenbank.csv";
     char* feldString = malloc(sizeof(char)*250);
@@ -319,34 +312,32 @@ void runSzenario4files(){
     holeInhaltAusDatei(feldString, 250, roboterPosition.x, roboterPosition.y, datenbank);
     sscanf(feldString,"F%i_N%i_O%i_S%i_W%i",&feld, &norden, &osten, &sueden, &westen);
 
-    // wenn das feld noch nicht besucht ist sehe dich um und gehe ein feld weiter
+    // wenn das Feld noch nicht besucht ist, sieh dich um und gehe ein Feld weiter
     if(!feld){
         umsehen(feldString);
         sscanf(feldString,"F%i_N%i_O%i_S%i_W%i",&feld, &norden, &osten, &sueden, &westen);
     }else{
-        //fals schon besucht erhöhe den feldcounter um 1
+        //falls schon besucht, erhöhe den Feld-counter um 1
         feld++;
     }
-    //speichere aktuelles feld
+    //speichere aktuelles Feld
     sprintf(feldString,"F%i_N%i_O%i_S%i_W%i",feld, norden, osten, sueden, westen);
     speichereInDatenbank(feldString,roboterPosition.x,roboterPosition.y,datenbank);
 
-    rchtingNaechsetFeld=naechstesFeld(datenbank);
+    richtungNaechstesFeld=naechstesFeld(datenbank);
 
-    // berechnet ob man in die entgegengesetzte richtung gehen soll
-    if((4+blickrichtung)%8==rchtingNaechsetFeld){
-
-printf("\nAAAAAAAAAAAAAAAAAAAARARARAAAAARARARARARARRARA\n");
-        // wenn nach hinten gegangen wird erhöhe den feld wert um eins,
-        //damit in sackgassen immer gleiche werte stehen
+    // berechnet ob man in die entgegengesetzte Richtung gehen soll
+    if((4+blickrichtung)%8==richtungNaechstesFeld){
+        //wenn der Robotor in einer Sackgasse steckt und nur nach Hinten gehen kann, erhöhe den Feld wert noch einmal um Eins,
+        //damit nicht im naechsten Feld der Roboter auf die Idee kommt das aktüelle Sackgassenfeld wieder zu besuchen.
         feld++;
         sprintf(feldString,"F%i_N%i_O%i_S%i_W%i",feld, norden, osten, sueden, westen);
         speichereInDatenbank(feldString,roboterPosition.x,roboterPosition.y,datenbank);
     }
-    // gucke in di richtung des naechsten feldes
-    setBlickrichtung(rchtingNaechsetFeld);
+    // gucke in die Richtung des nächsten Feldes
+    setBlickrichtung(richtungNaechstesFeld);
 
-printf("\n x=%i, y=%i feld: %s naechstesFeld %i \n",roboterPosition.x,roboterPosition.y,feldString,rchtingNaechsetFeld);
+	printf("\n x=%i, y=%i feld: %s naechstesFeld %i \n",roboterPosition.x,roboterPosition.y,feldString,richtungNaechstesFeld);
     // und gehe nach vorne
     geheNachVorn(1);
     free(datenbank);free(feldString);free(frontFeld);
@@ -369,6 +360,7 @@ void run()
 
 int main(int argc, char const *argv[])
 {
+	//Sollte die Datei nicht vorhanden sein, lege sie mit einer passenden Kopfzeile an
     FILE* datei = fopen(".\\tmp\\EntscheidungsDatenbank.csv", "r");
     if(datei == NULL){
             datei=fopen(".\\tmp\\EntscheidungsDatenbank.csv", "w");
@@ -387,13 +379,13 @@ int main(int argc, char const *argv[])
 			run();
 			nachDurchlauf();
 			//system("pause");
-			 millisleep(1000);
+			millisleep(500);
 		}
 	}else{
 		run();
 	}
 	zeichneKarte();
 	vorEnde();
-    //system("pause");
+    system("pause");
 	return 0;
 }

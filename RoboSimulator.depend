@@ -149,12 +149,11 @@
 1371757574 source:d:\prog\c\itp\itp-robosimulator\karte.c
 	"Karte.h"
 
-1371848050 source:d:\prog\c\itp\itp-robosimulator\loesungsalgorithmen.c
+1371848231 source:d:\prog\c\itp\itp-robosimulator\loesungsalgorithmen.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"loesungsalgorithmen.h"
-	"Roboter.h"
 	"Szenario.h"
 
 1371757248 d:\prog\c\itp\itp-robosimulator\loesungsalgorithmen.h

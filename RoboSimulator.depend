@@ -119,29 +119,20 @@
 
 1371757796 d:\prog\c\bla\robosimulator\hilfsfunktionen.h
 
-<<<<<<< HEAD
 1371848050 source:d:\prog\c\itp\itp-robosimulator\algorithmen.c
-=======
-1371769657 source:d:\prog\c\itp\itp-robosimulator\algorithmen.c
->>>>>>> aa5fc1d5d6c4dc52d8ed6f220e9ed72fbf7fee9e
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"Algorithmen.h"
 	"Roboter.h"
 
-<<<<<<< HEAD
 1371847440 d:\prog\c\itp\itp-robosimulator\algorithmen.h
-=======
-1371757250 d:\prog\c\itp\itp-robosimulator\algorithmen.h
->>>>>>> aa5fc1d5d6c4dc52d8ed6f220e9ed72fbf7fee9e
 
 1371755979 d:\prog\c\itp\itp-robosimulator\roboter.h
 	"Karte.h"
 	"Auswertung.h"
 	<stdbool.h>
 
-<<<<<<< HEAD
 1371846886 d:\prog\c\itp\itp-robosimulator\karte.h
 	<stdio.h>
 	<stdlib.h>
@@ -149,13 +140,6 @@
 
 1371846921 d:\prog\c\itp\itp-robosimulator\auswertung.h
 	"Algorithmen.h"
-=======
-1371769657 d:\prog\c\itp\itp-robosimulator\karte.h
-	<stdio.h>
-	<stdlib.h>
-
-1371755982 d:\prog\c\itp\itp-robosimulator\auswertung.h
->>>>>>> aa5fc1d5d6c4dc52d8ed6f220e9ed72fbf7fee9e
 
 1371757538 source:d:\prog\c\itp\itp-robosimulator\auswertung.c
 	"Auswertung.h"
@@ -165,20 +149,12 @@
 1371757574 source:d:\prog\c\itp\itp-robosimulator\karte.c
 	"Karte.h"
 
-<<<<<<< HEAD
 1371848231 source:d:\prog\c\itp\itp-robosimulator\loesungsalgorithmen.c
-=======
-1371761010 source:d:\prog\c\itp\itp-robosimulator\loesungsalgorithmen.c
->>>>>>> aa5fc1d5d6c4dc52d8ed6f220e9ed72fbf7fee9e
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"loesungsalgorithmen.h"
-<<<<<<< HEAD
 	"Szenario.h"
-=======
-	"Roboter.h"
->>>>>>> aa5fc1d5d6c4dc52d8ed6f220e9ed72fbf7fee9e
 
 1371757248 d:\prog\c\itp\itp-robosimulator\loesungsalgorithmen.h
 
@@ -187,7 +163,6 @@
 	<math.h>
 	"Szenario.h"
 
-<<<<<<< HEAD
 1371847869 d:\prog\c\itp\itp-robosimulator\szenario.h
 	"Roboter.h"
 
@@ -207,15 +182,4 @@
 	"loesungsalgorithmen.h"
 	<windows.h>
 	<unistd.h>
-=======
-1371756038 d:\prog\c\itp\itp-robosimulator\szenario.h
-	"Roboter.h"
-
-1371769700 source:d:\prog\c\itp\itp-robosimulator\szenario.c
-	<time.h>
-	"Szenario.h"
-	"Hilfsfunktionen.h"
-
-1371757796 d:\prog\c\itp\itp-robosimulator\hilfsfunktionen.h
->>>>>>> aa5fc1d5d6c4dc52d8ed6f220e9ed72fbf7fee9e
 

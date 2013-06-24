@@ -51,12 +51,6 @@ void vorEnde(){
 	Ausnahmsweise in dieser Datei. Ansonsten finden sich solche konkreten Algorithmen in Algorithmen.c/.h
 */
 
-
-
-
-
-
-
 void run()
 {
 

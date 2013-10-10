@@ -183,3 +183,63 @@
 	<windows.h>
 	<unistd.h>
 
+1381316585 source:d:\programmieren\git\itp-robosimulator\algorithmen.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"Algorithmen.h"
+	"Roboter.h"
+
+1381316526 d:\programmieren\git\itp-robosimulator\algorithmen.h
+
+1381319763 d:\programmieren\git\itp-robosimulator\roboter.h
+	"Karte.h"
+	"Auswertung.h"
+
+1381323538 d:\programmieren\git\itp-robosimulator\karte.h
+	<stdio.h>
+	<stdlib.h>
+	"Algorithmen.h"
+
+1381172440 d:\programmieren\git\itp-robosimulator\auswertung.h
+	"Algorithmen.h"
+
+1381172440 source:d:\programmieren\git\itp-robosimulator\auswertung.c
+	"Auswertung.h"
+
+1381323720 source:d:\programmieren\git\itp-robosimulator\karte.c
+	"Karte.h"
+
+1381323623 source:d:\programmieren\git\itp-robosimulator\loesungsalgorithmen.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"loesungsalgorithmen.h"
+	"Szenario.h"
+
+1381322164 d:\programmieren\git\itp-robosimulator\loesungsalgorithmen.h
+
+1381322018 d:\programmieren\git\itp-robosimulator\szenario.h
+	"Roboter.h"
+
+1381323584 source:d:\programmieren\git\itp-robosimulator\robosimulator.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<unistd.h>
+	<windows.h>
+	"Szenario.h"
+	"loesungsalgorithmen.h"
+	<windows.h>
+	<unistd.h>
+
+1381321485 source:d:\programmieren\git\itp-robosimulator\roboter.c
+	"Roboter.h"
+	<math.h>
+	"Szenario.h"
+
+1381323566 source:d:\programmieren\git\itp-robosimulator\szenario.c
+	<time.h>
+	"Szenario.h"
+	<string.h>
+

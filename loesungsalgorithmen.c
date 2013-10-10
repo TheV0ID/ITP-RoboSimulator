@@ -5,22 +5,22 @@
 #include "Szenario.h"
 
 void runSzenario3OURL(){
-    if(schrittZaehler<2)U(1);
-    else if(schrittZaehler>=2&&schrittZaehler<6)R(1);
-    else if(schrittZaehler>=6&&schrittZaehler<8)U(1);
-    else if(schrittZaehler>=8&&schrittZaehler<12)L(1);
-    else if(schrittZaehler>=12&&schrittZaehler<14)U(1);
-    else if(schrittZaehler>=14&&schrittZaehler<20)R(1);
-    else if(schrittZaehler>=20)O(1);
+    if(getSchrittZaehler()<2)U(1);
+    else if(getSchrittZaehler()>=2&&getSchrittZaehler()<6)R(1);
+    else if(getSchrittZaehler()>=6&&getSchrittZaehler()<8)U(1);
+    else if(getSchrittZaehler()>=8&&getSchrittZaehler()<12)L(1);
+    else if(getSchrittZaehler()>=12&&getSchrittZaehler()<14)U(1);
+    else if(getSchrittZaehler()>=14&&getSchrittZaehler()<20)R(1);
+    else if(getSchrittZaehler()>=20)O(1);
 
-	printf("schritte = %i\n",schrittZaehler);
+	printf("schritte = %i\n",getSchrittZaehler());
 	printf("%i", getBlickrichtung());
 }
 
 void runSzenario5dotfinder(){
     if(getFrontZeichen()=='.'||getFrontZeichen()=='Z'){
         geheNachVorn(1);
-        zwischenSpeicher=' ';
+        setZeichenAnPosition(' ', getRoboterPosition());
     }else{
         drehen(45,1);
     }
@@ -45,20 +45,20 @@ void runSzenario4rightTurn(){
 void runSzenario3Karteerstellen(){
     int zellencode;
     int zeichen;
-    int posZeichen=holeSpeicherstand2d(roboterPosition.x,roboterPosition.y);
+    int posZeichen=holeSpeicherstand2d(getRoboterPosition().x,getRoboterPosition().y);
     int problem=0;
 
     if(!posZeichen){
         //rundumblick bestimmen
-        int a=blickrichtung;
-        blickrichtung=0;
+        int a=getBlickrichtung();
+        setBlickrichtung(0);
         zellencode=0;
 
         if(frontSensor())zellencode+=1;
         if(rechterSensor())zellencode+=10;
         if(heckSensor())zellencode+=100;
         if(linkerSensor())zellencode+=1000;
-        blickrichtung=a;
+        setBlickrichtung(a);
         //
         switch(zellencode){
             // ein ausgang
@@ -84,7 +84,7 @@ void runSzenario3Karteerstellen(){
             case 1111:zeichen=206;break;
             default:zeichen=0;problem=1;
         }
-        if(!problem)setzeSpeicherstand2d(zeichen,roboterPosition.x,roboterPosition.y);
+        if(!problem)setzeSpeicherstand2d(zeichen,getRoboterPosition().x,getRoboterPosition().y);
 
     }
     gebe2dSpeicherAus();
@@ -134,8 +134,8 @@ void runSzenario3Karteerstellen(){
 
 void runSzenario3quickReturn(){
     int *a=hole1dSpeicherArray();
-    if(zwischenSpeicher=='Z'){
-        a[0]=schrittZaehler;
+    if(getZeichenAnPosition(getRoboterPosition())=='Z'){
+        a[0]=getSchrittZaehler();
     }
     if(a[0]==0){
         if(getFrontZeichen()=='#'){
@@ -150,13 +150,14 @@ void runSzenario3quickReturn(){
             drehe();
             drehe();
         }
-        a[1+schrittZaehler]=blickrichtung;
+        a[1+getSchrittZaehler()]=getBlickrichtung();
         geheNachVorn(1);
     }else{
-        if(blickrichtung==0)geheNachVorn(1);
-        if(blickrichtung==2)
-        if(blickrichtung==4)
-        if(blickrichtung==6)
+    	//TODO MEGA SCHEI?E!
+        if(getBlickrichtung()==0)geheNachVorn(1);
+        if(getBlickrichtung()==2)
+        if(getBlickrichtung()==4)
+        if(getBlickrichtung()==6)
         a[0]--;
     }
 }
@@ -173,7 +174,7 @@ void runSzenario4files(){
     char* feldString = malloc(sizeof(char)*250);
     char* frontFeld = malloc(sizeof(char)*250);
 
-    holeInhaltAusDatei(feldString, 250, roboterPosition.x, roboterPosition.y, datenbank);
+    holeInhaltAusDatei(feldString, 250, getRoboterPosition().x, getRoboterPosition().y, datenbank);
     sscanf(feldString,"F%i_N%i_O%i_S%i_W%i",&feld, &norden, &osten, &sueden, &westen);
 
     // wenn das Feld noch nicht besucht ist, sieh dich um und gehe ein Feld weiter
@@ -186,23 +187,64 @@ void runSzenario4files(){
     }
     //speichere aktuelles Feld
     sprintf(feldString,"F%i_N%i_O%i_S%i_W%i",feld, norden, osten, sueden, westen);
-    speichereInDatenbank(feldString,roboterPosition.x,roboterPosition.y,datenbank);
+    speichereInDatenbank(feldString,getRoboterPosition().x,getRoboterPosition().y,datenbank);
 
     richtungNaechstesFeld=naechstesFeld(datenbank);
 
     // berechnet ob man in die entgegengesetzte Richtung gehen soll
-    if((4+blickrichtung)%8==richtungNaechstesFeld){
+    if((4+getBlickrichtung())%8==richtungNaechstesFeld){
         //wenn der Robotor in einer Sackgasse steckt und nur nach Hinten gehen kann, erhöhe den Feld wert noch einmal um Eins,
         //damit nicht im naechsten Feld der Roboter auf die Idee kommt das aktüelle Sackgassenfeld wieder zu besuchen.
         feld++;
         sprintf(feldString,"F%i_N%i_O%i_S%i_W%i",feld, norden, osten, sueden, westen);
-        speichereInDatenbank(feldString,roboterPosition.x,roboterPosition.y,datenbank);
+        speichereInDatenbank(feldString,getRoboterPosition().x,getRoboterPosition().y,datenbank);
     }
     // gucke in die Richtung des nächsten Feldes
     setBlickrichtung(richtungNaechstesFeld);
 
-	printf("\n x=%i, y=%i feld: %s naechstesFeld %i \n",roboterPosition.x,roboterPosition.y,feldString,richtungNaechstesFeld);
+	printf("\n x=%i, y=%i feld: %s naechstesFeld %i \n",getRoboterPosition().x,getRoboterPosition().y,feldString,richtungNaechstesFeld);
     // und gehe nach vorne
     geheNachVorn(1);
     free(datenbank);free(feldString);free(frontFeld);
+}
+
+void gameOfLife() {
+	Position p;
+	int x, y;
+	char** nachher = malloc(sizeof(char*)*kartenXLaenge);
+	for(x = 0; x < kartenXLaenge; x++) {
+		nachher[x] = malloc(sizeof(char)*kartenYLaenge);
+	}
+	for(x = 0; x < kartenXLaenge; x++) {
+		for(y = 0; y < kartenYLaenge; y++) {
+			p.x = x;
+			p.y = y;
+			int i;
+			int lebend = 0;
+			for(i = 0; i < 8; i++) {
+				printf("Nicht kaputt: %ix%i at %i\n", x, y, i);
+				Parzelle* par = getNachbarZelle(p, i);
+				if(par == NULL) {
+					printf("NULL\n");
+				} else {
+					printf("parzelle %ix%i, zeichen: %c\n", par->pos.x, par->pos.y, par->zeichen);
+				}
+
+				if(par != NULL && par->zeichen == '#') {
+					lebend++;
+				}
+			}
+			if(lebend < 2) {
+				nachher[x][y] = ' ';
+			} else if(lebend == 3) {
+				nachher[x][y] = '#';
+			} else if(lebend > 3) {
+				nachher[x][y] = ' ';
+			} else {
+				nachher[x][y] = getZeichenAnKoordinaten(x, y);
+			}
+		}
+	}
+	setKarte(nachher, kartenXLaenge, kartenYLaenge);
+	aktualisiereParzellen();
 }

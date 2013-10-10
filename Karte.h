@@ -27,8 +27,10 @@ extern int kartenYLaenge;
  * */
 extern int torusRaum;
 
+extern int zeichneRoboter;
+
 /*
- * Die Karte selbst ist eine Matrix karte[x][y](kein C-String).
+ * Eine Darstellung der Karte als eine Matrix char[x][y](kein C-String).
  * Der Ursprung(0,0) der Karte ist links oben und der Punkt (x-1,y-1) ist die rechte untere Ecke.
  * */
 extern char **karte;
@@ -41,6 +43,12 @@ typedef struct PositionStruct{
 	int x;
 	int y;
 } Position;
+
+typedef struct ParzellenStruct {
+	Position pos;
+	char zeichen;
+	int roboterID;
+} Parzelle;
 
 /*
 */
@@ -81,6 +89,22 @@ void zeichneKarte();
 */
 Position getZiel();
 
+/*
+* Gibt wahr (1) zurück, wenn ein Zeichen für alle Roboter als unpassierbar gilt.
+*/
+int istZeichenUnpassierbar(char c);
 
+/*
+* Teilt der Karte mit, dass der Roboter mit der gegebenen ID auf die gegebene Position gesetzt wurde.
+*/
+void setzeRoboterAufKarte(int roboterID, Position pos);
+
+/*
+* In altem Code wurde die Karten-Zeichen-Matrix von Außen direkt gesetzt und damit verändert, ohne, dass die zu Grunde liegenden
+* Parzellen upgedated wurden. Diese Funktion holt dies nach, sollte aber in neuem Code nicht genutzt werden muessen!
+* In neuem Code sollte direkt setZeichenAnPosition oder setZeichenAnKoordinaten genutzt werden.
+*/
+
+void aktualisiereParzellen();
 
 #endif // KARTE_H_INCLUDED

@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<time.h>
 #include<unistd.h>
+#include <windows.h>
 
 #include "Szenario.h"
 #include "loesungsalgorithmen.h"
@@ -51,7 +52,8 @@ void vorEnde(){
 	Ausnahmsweise in dieser Datei. Ansonsten finden sich solche konkreten Algorithmen in Algorithmen.c/.h
 */
 
-void run()
+//Bekommt gesagt, welcher Roboter gerade aktiv ist. Im Normalfall ist dies immer der einzige Roboter mit der Nummer 0.
+void run(int roboterID)
 {
 
 //    runSzenario3quickReturn();
@@ -60,27 +62,44 @@ void run()
 //    runSzenario4rightTurn();
 //    runSzenario5dotfinder();
 
-    runSzenario4files();
+    //runSzenario4files();
 
+    while(!frontSensor()) {
+		drehe();
+    }
+    motorLinksUndRechtsAn(1);
+}
 
+void runOhneRobo() {
+	gameOfLife();
 }
 
 int main(int argc, char const *argv[])
 {
 	int wiederholen=1;
-    ladeSzenario(4);
+    ladeSzenario(8);
     zeichneKarte();
 	if(wiederholen){
-		while(!istZielErreicht() && programmLaeuft && !kollision)
+			//TODO das mit der kollision tut so nur für den ersten roboter
+		while(!istZielErreicht() && programmLaeuft && !(getRoboter(0)->kollision))
 		{
 			zeichneKarte();
-			run();
-			nachDurchlauf();
-			//system("pause");
+			if(ohneRoboter) {
+				runOhneRobo();
+			} else {
+				int i;
+				run(0);
+				//Schaltet so lange alle Roboter durch, bis anzahlRoboter erreicht wurde
+				for(i = 1; setzeAktuellenRoboterAuf(i); i++) {
+					run(i);
+				}
+				setzeAktuellenRoboterAuf(0);
+				nachDurchlauf();
+			}
 			millisleep(500);
 		}
 	}else{
-		run();
+		run(0);
 	}
 	zeichneKarte();
 	vorEnde();

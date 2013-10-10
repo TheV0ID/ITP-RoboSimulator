@@ -8,6 +8,7 @@ int szenarioNummer=1;
 char* relevanteZeichen;
 char* DatenbankDateiPfad;
 int laengeRelevanteZeichen = 0;
+int ohneRoboter = 0;
 //
 void ladeSzenario(int szenario){
     szenarioNummer=szenario;
@@ -28,21 +29,22 @@ void ladeSzenario(int szenario){
 
 
 int istZielErreicht(){
+
 	switch(szenarioNummer) {
 		case 2: return getAnzahlGesammelterGegenstaende() == laengeRelevanteZeichen;
             break;
 		case 6: {
-                    if(zwischenSpeicher == 'Z'){
+                    if(getZeichenAnRoboterPosition() == 'Z'){
                         Position ziel3 = {1, 1 };
                         ziel = ziel3;
                     }
                     Position ziel = getZiel();
-		            return roboterPosition.x == ziel.x && roboterPosition.y == ziel.y;
+		            return getRoboterPosition().x == ziel.x && getRoboterPosition().y == ziel.y;
                 }
                 break;
 		default:{
                     Position ziel = getZiel();
-		            return roboterPosition.x == ziel.x && roboterPosition.y == ziel.y;
+		            return getRoboterPosition().x == ziel.x && getRoboterPosition().y == ziel.y;
                     break;
                 }
 	}
@@ -78,13 +80,14 @@ void szenario1(){
 				karte[i][j]='#';
 			}
 			else {
-				karte[i][j]=' ' ;
+				karte[i][j]=' ';
 			}
 		}
 	}
+	aktualisiereParzellen();
 	Position position = {0, 0};
 	initialisiereRoboter(position, 2);
-	setZwischenSpeicherZeichen('S');
+	setZeichenAnKoordinaten('S', 0, 0);
 	setZeichenAnKoordinaten('Z', 15, 15);
 }
 
@@ -107,9 +110,10 @@ void szenario2(){
 			}
 		}
 	}
+	aktualisiereParzellen();
 	Position position = {0, 0 };
 	initialisiereRoboter(position, 2);
-	setZwischenSpeicherZeichen('S');
+	setZeichenAnKoordinaten('S', 0, 0);
 	setZeichenAnKoordinaten('A', 3, 0);
 	setZeichenAnKoordinaten('B', 5, 1);
 	laengeRelevanteZeichen = 2;
@@ -137,7 +141,7 @@ void szenario3(){
     arr[8]="#########";
     setKarte(arr,spalten,zeilen);
 
-    zwischenSpeicher='S';
+    setZeichenAnKoordinaten('S', 1, 1);
 
     Position position = {1, 1 };
 	initialisiereRoboter(position, 2);
@@ -190,7 +194,7 @@ void szenario4(){
 
     setKarte(arr,spalten,zeilen);
 
-    zwischenSpeicher='S';
+    setZeichenAnKoordinaten('S', 1, 1);
 
     Position position = {1, 1 };
 	initialisiereRoboter(position, 2);
@@ -230,8 +234,9 @@ void szenario5(){
     arr[19]="########################################";
 
     setKarte(arr,spalten,zeilen);
+    aktualisiereParzellen();
 
-    zwischenSpeicher='S';
+    setZeichenAnKoordinaten('S', 1, 1);
 
     Position position = {1, 1 };
 	initialisiereRoboter(position, 2);
@@ -258,7 +263,7 @@ void szenario6(){
     arr[8]="#########";
     setKarte(arr,spalten,zeilen);
 
-    zwischenSpeicher='S';
+    setZeichenAnKoordinaten('S', 1, 1);
 
     Position position = {1, 1 };
 	initialisiereRoboter(position, 2);
@@ -266,6 +271,57 @@ void szenario6(){
     Position ziel3 = {0, 0 };
     ziel = ziel3;
 }
-void szenario7(){}
-void szenario8(){}
+//Zwei Roboter Test
+void szenario7(){
+    initialisierung(20,20);
+	srand(2);
+	int i, j;
+	int wahrscheinlichkeit=10;
+
+	for (i=0;i<kartenXLaenge;i++){
+		for (j=0;j<kartenYLaenge;j++){
+			if(rand()%100 < wahrscheinlichkeit) {
+				karte[i][j]='#';
+			}
+			else {
+				karte[i][j]=' ';
+			}
+		}
+	}
+	aktualisiereParzellen();
+	Position position = {0, 0};
+	anzahlRoboter = 2;
+	initialisiereRoboter(position, 2);
+	Position neuePosition = {2, 2};
+	char* aussehensarray[8] = {'t','t','t','t','t','t','t','t'};
+	char* unpassierbare[1];
+	unpassierbare[0] = '_';
+	erzeugeNeuenRoboter(1, neuePosition, 2, aussehensarray, 'z', 0, unpassierbare, 1);
+	setZeichenAnKoordinaten('S', 0, 0);
+	setZeichenAnKoordinaten('Z', 15, 15);
+}
+
+
+void szenario8(){
+	ohneRoboter = 1;
+	zeichneRoboter = 0;
+	initialisierung(20,20);
+	srand(2);
+	int i, j;
+	int wahrscheinlichkeit=10;
+
+	for (i=0;i<kartenXLaenge;i++){
+		for (j=0;j<kartenYLaenge;j++){
+			if(rand()%100 < wahrscheinlichkeit) {
+				karte[i][j]='#';
+			}
+			else {
+				karte[i][j]=' ';
+			}
+		}
+	}
+	aktualisiereParzellen();
+	Position p = {0, 0};
+	initialisiereRoboter(p, 2);
+}
 void szenario9(){}

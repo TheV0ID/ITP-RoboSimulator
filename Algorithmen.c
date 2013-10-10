@@ -119,6 +119,12 @@ int enthaelt(char zeichenArray[], int laenge, char zeichen) {
 	return 0;
 }
 
+void kopiere(char* neu, char* alt, int laenge) {
+	for(laenge--; laenge >= 0; laenge--) {
+		neu[laenge] = alt[laenge];
+	}
+}
+
 
 int sucheGespeicherteKoordinaten(int x,int y, char* pfad,int* zeile){
     int i,
@@ -263,19 +269,19 @@ void umsehen(char* feldString){
         sueden=0,
         westen=0;
 
-    blick=blickrichtung;
-    blickrichtung=nord;
+    blick=getBlickrichtung();
+    setBlickrichtung(nord);
     if(frontSensor())norden=1;
     if(rechterSensor())osten=1;
     if(heckSensor())sueden=1;
     if(linkerSensor())westen=1;
-    blickrichtung=blick;
+    setBlickrichtung(blick);
 
     sprintf(feldString,"F1_N%i_O%i_S%i_W%i", norden, osten, sueden, westen);
 }
 
 int naechstesFeld(char* datenbank){
-    int b=blickrichtung,
+    int b=getBlickrichtung(),
         ausgaenge=0,
         feld,
         hinten,
@@ -290,12 +296,12 @@ int naechstesFeld(char* datenbank){
     char* frontFeld = malloc(sizeof(char)*250);
     char* Feldstr = malloc(sizeof(char)*250);
 
-    if(holeInhaltAusDatei(Feldstr, 250, roboterPosition.x, roboterPosition.y, datenbank)){
+    if(holeInhaltAusDatei(Feldstr, 250, getRoboterPosition().x, getRoboterPosition().y, datenbank)){
         return -1;
     }
     sscanf(Feldstr,"F%i_N%i_O%i_S%i_W%i",&feld, &fi[nord], &fi[ost], &fi[sued], &fi[west]);
     if(fi[nord]){
-        blickrichtung=nord;
+        setBlickrichtung(nord);
         if(holeInhaltAusDatei(frontFeld, 250, getFrontPosition().x, getFrontPosition().y, datenbank)){
             return -1;
         }
@@ -303,7 +309,7 @@ int naechstesFeld(char* datenbank){
         ausgaenge++;
     }
     if(fi[ost]){
-        blickrichtung=ost;
+        setBlickrichtung(ost);
         if(holeInhaltAusDatei(frontFeld, 250, getFrontPosition().x, getFrontPosition().y, datenbank)){
             return -1;
         }
@@ -311,7 +317,7 @@ int naechstesFeld(char* datenbank){
         ausgaenge++;
     }
     if(fi[sued]){
-        blickrichtung=sued;
+        setBlickrichtung(sued);
         if(holeInhaltAusDatei(frontFeld, 250, getFrontPosition().x, getFrontPosition().y, datenbank)){
             return -1;
         }
@@ -319,14 +325,14 @@ int naechstesFeld(char* datenbank){
         ausgaenge++;
     }
     if(fi[west]){
-        blickrichtung=west;
+        setBlickrichtung(west);
         if(holeInhaltAusDatei(frontFeld, 250, getFrontPosition().x, getFrontPosition().y, datenbank)){
             return -1;
         }
         sscanf(frontFeld,"F%i_N%*i_O%*i_S%*i_W%*i", &fi[west+1]);
         ausgaenge++;
     }
-    blickrichtung=b;
+    setBlickrichtung(b);
     hinten = (b+4)%8;
 
     min=fi[nord+1];
@@ -335,28 +341,28 @@ int naechstesFeld(char* datenbank){
     if(fi[west+1]<min)min=fi[west+1];
 
     //Reihenfolge für Bewegung nächstes Feld liegt:
-    if(fi[blickrichtung]&&fi[blickrichtung+1]==min){// vorne
-        res=blickrichtung;
+    if(fi[getBlickrichtung()]&&fi[getBlickrichtung()+1]==min){// vorne
+        res=getBlickrichtung();
     }else{
         drehen(90,0);
         // rechts
-        if(fi[blickrichtung]&&fi[blickrichtung+1]==min){
-            res=blickrichtung;
+        if(fi[getBlickrichtung()]&&fi[getBlickrichtung()+1]==min){
+            res=getBlickrichtung();
         }else{
             drehen(90,0);drehen(90,0);
             b=(b+4)%8;// links
-            if(fi[blickrichtung]&&fi[blickrichtung+1]==min){
-                res=blickrichtung;
+            if(fi[getBlickrichtung()]&&fi[getBlickrichtung()+1]==min){
+                res=getBlickrichtung();
             }else{
                 drehen(90,0);drehen(90,0);drehen(90,0);
                 // hinten
-                if(fi[blickrichtung]&&fi[blickrichtung+1]==min){
-                    res=blickrichtung;
+                if(fi[getBlickrichtung()]&&fi[getBlickrichtung()+1]==min){
+                    res=getBlickrichtung();
                 }
             }
         }
     }
-    printf("\nAusgaenge: %i, v=%i,h=%i |=>>> res = %i\n",ausgaenge,blickrichtung,hinten,res);
+    printf("\nAusgaenge: %i, v=%i,h=%i |=>>> res = %i\n",ausgaenge,getBlickrichtung(),hinten,res);
     printf("\n\t\t%i\n\t%i\t%i\t%i\n\t\t%i\n", fi[nord+1], fi[west+1], feld, fi[ost+1], fi[sued+1]);
 
     //Arrays freigeben

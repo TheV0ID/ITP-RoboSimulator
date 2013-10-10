@@ -14,6 +14,11 @@ extern int szenarioNummer;
 extern char* DatenbankDateiPfad;
 
 /*
+* Gibt an, ob dieses Szenario ohne Roboter stattfinden soll.
+*/
+extern int ohneRoboter;
+
+/*
  * Laedt das Szenario mit der uebergebenen Nummer
  * */
 void ladeSzenario(int szenarioNummer);

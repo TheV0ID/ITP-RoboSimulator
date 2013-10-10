@@ -4,17 +4,39 @@
 #include "Karte.h"
 #include "Auswertung.h"
 
-#include <stdbool.h>
+typedef struct RoboterStruct {
+	int roboterID;
+	Position pos;
+	int blickrichtung;
+	char* aussehensArray;
+	char aussehen;
+	int aussehenAbhaengigVonBlickrichtung;
+	char* unpassierbareZeichen;
+	int unpassierbareZeichenLaenge;
+	int kollision; //Hat eine Kollision stattgefunden? 0 so lange dies nicht passiert ist.
+	int drehungsZaehler;
+	int schrittZaehler;
+	int anzahlGesammelterGegenstaende;
+} Roboter;
+
+extern Roboter* aktuellerRoboter;
+extern Roboter* alleRoboter;
+
+extern int anzahlRoboter;
+
+
 /*
-* Speichert die Position des roboters auf der Karte
+* Speichert die Position des roboters auf der Karte. VARIABLE NUR NOCH AUS KOMPATIBILITÄTSGRÜNDEN IM CODE!
 */
-extern Position  roboterPosition;
+//extern Position roboterPosition;
 
 /*                                             701
  *Zeigt die Blickrichtung des Roboters R an :  6R2
  *                                             543
+
+ VARIABLE NUR NOCH AUS KOMPATIBILITÄTSGRÜNDEN IM CODE!
  * */
-extern int blickrichtung;
+//extern int blickrichtung;
 
 /*
 * Der Speicher kann genutzt werden um Informationen uber meherere run() durchläufe zu bewahren.
@@ -35,26 +57,13 @@ int spicher2dyKapazitaet;
 int **speicher2d;
 int holeSpeicherstand2d(int x, int y);
 void setzeSpeicherstand2d(int speicherstand, int x, int y);
-/*
-* speichert die Zeichen der positionen zwischen die sich an der position des Roboters befanden. kann genutzt werden um diese zu löschen durch überschreiben mit ' '.
-*/
-extern char zwischenSpeicher;
 
-/*
-* gibt an ob der Roboter kollidiert ist oder nicht 0 sollange der roboter nicht kollidiert ist.
-*/
-extern int kollision;
 
 // Initialisierung
 /*
  *Initialisiert den Roboter
  * */
 void initialisiereRoboter(Position position,int blickrichtung);
-
-/*
-* Setze das Zeichen, das an der Stelle des Roboters platziert wird, wenn dieser sich das nächste mal weiterbewegt.
-*/
-void setZwischenSpeicherZeichen(char c);
 
 //bewegung
 
@@ -67,6 +76,11 @@ int getBlickrichtung();
  *setzt die Blickrichtung des Roboters
  */
 void setBlickrichtung(int blickRichtung);
+
+/*
+* Gibt die Position des aktuell ausgewählten Roboters zurück.
+*/
+Position getRoboterPosition();
 
 /*
  *dreht den Roboter um eine vordefinierte schrittzahl in vorgegebener richtung wie in den ersten Uebungen zb. rechtsherum um 90 grad
@@ -105,7 +119,7 @@ int geheNachVorn(int schritte);
 //sensoren
 
 /*
- * Die Sensoren geben "false" wieder wenn der jeweilige Sensor eine Wand erkannt hat, sonst "true".
+ * Die Sensoren geben "false" (0) wieder wenn der jeweilige Sensor eine Wand erkannt hat, sonst "true" (1).
  * */
 int frontSensor();
 int heckSensor();
@@ -144,24 +158,24 @@ int greifeGegenstand();
 int getAnzahlGesammelterGegenstaende();
 
 /*
-* bewegt den Roboter nach oben um die ubergebene anzahl der schritte. Gibt 1 im erfolgsfall zuruck 0 sonst.
+* bewegt den Roboter so weit wie möglich nach oben um die ubergebene anzahl der schritte. Gibt 1 im erfolgsfall zuruck 0 sonst.
 */
 int O(int schritte);
 
 /*
-* bewegt den Roboter nach unten um die ubergebene anzahl der schritte. Gibt 1 im erfolgsfall zuruck 0 sonst.
+* bewegt den Roboter so weit wie möglich nach unten um die ubergebene anzahl der schritte. Gibt 1 im erfolgsfall zuruck 0 sonst.
 */
 int U(int schritte);
 
 
 /*
-* bewegt den Roboter nach links um die ubergebene anzahl der schritte. Gibt 1 im erfolgsfall zuruck 0 sonst.
+* bewegt den Roboter so weit wie möglich nach links um die ubergebene anzahl der schritte. Gibt 1 im erfolgsfall zuruck 0 sonst.
 */
 int L(int schritte);
 
 
 /*
-* bewegt den Roboter nach rechts um die ubergebene anzahl der schritte. Gibt 1 im erfolgsfall zuruck 0 sonst.
+* bewegt den Roboter so weit wie möglich nach rechts um die ubergebene anzahl der schritte. Gibt 1 im erfolgsfall zuruck 0 sonst.
 */
 int R(int schritte);
 
@@ -170,5 +184,31 @@ int R(int schritte);
 */
 int bewegeRoboter(Position von, Position nach);
 
+/*
+* Gibt das Zeichen mit der der Roboter mit der gegebenen Kennnummer dargestellt werden soll.
+* Dies kann je nach Roboter und je nach Blickrichtung variieren.
+*/
+char getRoboterZeichen(int roboterID);
+
+/*
+* Gibt an, ob das gegebene Zeichen für den aktuellen Roboter passierbar ist.
+* So können verschiedene Roboter verschiedene Geländetauglichkeit haben.
+* 0 steht für nicht passierbar, 1 für passierbar.
+*/
+int istZeichenPassierbar(char c);
+
+int getSchrittZaehler();
+
+void erhoeheSchrittZaehler();
+
+int getKollision();
+
+void setKollision(int i);
+
+Roboter* getRoboter(int roboterID);
+
+int erzeugeNeuenRoboter(int roboterID, Position pos, int blickrichtung, char* aussehensArray, char aussehen, int aussehenAbhaengigVonBlickrichtung, char* unpassierbareZeichen, int unpassierbareZeichenLaenge);
+
+char getZeichenAnRoboterPosition();
 
 #endif // ROBOTER_H_INCLUDED

@@ -14,6 +14,11 @@ void ausDatei(char* pfad, int* programmLaeuft);
 */
 int enthaelt(char zeichenArray[], int laenge, char zeichen);
 
+/*
+* Kopiere den Inhalt eines Arrays von alt nach neu
+*/
+void kopiere(char* neu, char* alt, int laenge);
+
 int sucheGespeicherteKoordinaten(int x,int y, char* pfad,int* zeile);
 
 int anhaengen(char* pfad,char* inhalt);

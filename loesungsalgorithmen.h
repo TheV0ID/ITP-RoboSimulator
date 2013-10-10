@@ -8,5 +8,6 @@ void runSzenario3Karteerstellen();
 void runSzenario3quickReturn();
 //  Aufgabe für die Übung
 void runSzenario4files();
+void gameOfLife();
 
 #endif // LOESUNGSALGORITHMEN_H_INCLUDED
